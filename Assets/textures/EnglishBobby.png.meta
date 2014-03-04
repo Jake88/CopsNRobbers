@@ -1,0 +1,85 @@
+fileFormatVersion: 2
+guid: 4cfa2960c9c34974fa7ab6f1db5c46da
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings:
+  - buildTarget: iPhone
+    maxTextureSize: 1024
+    textureFormat: -2
+    compressionQuality: 50
+  spriteSheet:
+    sprites:
+    - name: EnglishBobby_up
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 111
+        width: 44
+        height: 40
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: EnglishBobby_down
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 104
+        width: 45
+        height: 46
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: EnglishBobby_right
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 6
+        width: 38
+        height: 36
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: EnglishBobby_left
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 6
+        width: 39
+        height: 36
+      alignment: 0
+      pivot: {x: .5, y: .5}
+  spritePackingTag: 
+  userData: 
