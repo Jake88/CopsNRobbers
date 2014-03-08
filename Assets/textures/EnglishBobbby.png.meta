@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 67870928b13c2f547b37daa7b8f50cd2
+guid: 5fd113f8817769d48826dc71ecd96e18
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -45,31 +45,40 @@ TextureImporter:
     compressionQuality: 50
   spriteSheet:
     sprites:
-    - name: EnglishBobby_rightArm
+    - name: EnglishBobbby_up
       rect:
         serializedVersion: 2
         x: 0
-        y: 3
-        width: 14
-        height: 24
+        y: 103
+        width: 40
+        height: 44
       alignment: 0
       pivot: {x: .5, y: .5}
-    - name: EnglishBobby_body
+    - name: EnglishBobbby_down
       rect:
         serializedVersion: 2
-        x: 15
+        x: 101
+        y: 100
+        width: 46
+        height: 44
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: EnglishBobbby_left
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 38
+        height: 36
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: EnglishBobbby_right
+      rect:
+        serializedVersion: 2
+        x: 103
         y: 0
-        width: 37
-        height: 38
-      alignment: 0
-      pivot: {x: .5, y: .5}
-    - name: EnglishBobby_leftArm
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 4
-        width: 11
-        height: 23
+        width: 39
+        height: 36
       alignment: 0
       pivot: {x: .5, y: .5}
   spritePackingTag: 
