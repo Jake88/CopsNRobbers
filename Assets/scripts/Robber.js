@@ -2,7 +2,6 @@
 
 var _curHP : float;
 var _maxHP : float;
-var _speed : float;
 var _stealAmount : int;
 var _bountyValue : int;
 var _returning : boolean;
@@ -11,7 +10,6 @@ private var _healthBar : Health;
 private var _curTile : Tile;
 
 function Start () {
-	transform.position = GameObject.FindGameObjectWithTag("StartTile").transform.position;
 	_curHP = _maxHP;
 	_healthBar = transform.FindChild("hp-foreground").GetComponent("Health");
 }
