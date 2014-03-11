@@ -5,7 +5,6 @@ var _minDamage : float;
 var _maxDamage : float;
 var _attackSpeed : float;
 
-
 private var _target : Transform;
 private var _attackCooldown : float;
 private var _anim : Animator;

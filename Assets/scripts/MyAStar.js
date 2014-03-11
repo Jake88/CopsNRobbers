@@ -83,13 +83,17 @@ class MyAStar
 	function SetPath() {
 		Debug.Log("Setting Path");
 		var tile : Tile = LevelMaster.Get()._endTile;
-		
+		var sr : SpriteRenderer;
+
 		while (tile.tag != "StartTile") {
-			var sr : SpriteRenderer = tile.GetComponent("SpriteRenderer");
+			sr = tile.GetComponent("SpriteRenderer");
 			sr.color = Color.blue;
 			LevelMaster.Get()._path.Add(tile);
 			tile = tile._parentTile;
 		}
+		sr = tile.GetComponent("SpriteRenderer");
+		sr.color = Color.blue;
+		LevelMaster.Get()._path.Add(tile);
 		Debug.Log("Path Set. Path count: " + LevelMaster.Get()._path.length);
 	}
 
