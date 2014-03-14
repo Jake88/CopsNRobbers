@@ -12,7 +12,7 @@ class MyAStar
         return Instance;
     }
 
-    private function MySingletonClass() {}
+    private function MyAStar() {}
     
     function Init() {
 		SetHScores();
@@ -20,14 +20,9 @@ class MyAStar
 	}
 
 	function CreatePath() {
-		Debug.Log("Creating path");
 		LevelMaster.Get()._startTile._GScore = 0;
 		_openList.Add(LevelMaster.Get()._startTile);
 		CheckTilesRecursive();
-		
-		for (tile in LevelMaster.Get()._path) {
-			Debug.Log(tile);
-		}
 	}
 
 
@@ -81,7 +76,6 @@ class MyAStar
 	}
 
 	function SetPath() {
-		Debug.Log("Setting Path");
 		var tile : Tile = LevelMaster.Get()._endTile;
 		var sr : SpriteRenderer;
 
@@ -94,7 +88,6 @@ class MyAStar
 		sr = tile.GetComponent("SpriteRenderer");
 		sr.color = Color.blue;
 		LevelMaster.Get()._path.Add(tile);
-		Debug.Log("Path Set. Path count: " + LevelMaster.Get()._path.length);
 	}
 
 	function GetLowestFTile() {
@@ -109,7 +102,6 @@ class MyAStar
 	}
 
 	function IsValidTile(x:int, y:int) {
-		Debug.Log("Checking if valid tile: X="+x + " Y="+y);
 		// Check if the tile is within the bounds of the array.
 		if(IsWithinGrid(x,y) && !IsOccupied(x,y) && !IsInClosedList(x,y) && !IsInOpenList(x,y)) {
 			return true;

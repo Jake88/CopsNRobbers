@@ -28,6 +28,34 @@ function Awake()
 {
     Instance = this;
 
+	CreateTiles();
+	MyAStar.Get().Init();
+}
+
+function Update() {
+	if (Input.GetMouseButtonDown(0)) {
+		
+		var x = Random.Range(0, _mallWidth-1);
+		var y = Random.Range(0, _mallHeight-1);
+		var tile : Tile = _tiles[x,y];
+		Debug.Log(tile._occupied);
+		if (!tile._occupied) {
+			var cop : GameObject = Instantiate(Resources.Load("EnglishBobby"));
+			cop.transform.position.x = x;
+			cop.transform.position.y = y;
+			
+			for (i in _tiles) {
+				var j : Tile = i;
+				var sr : SpriteRenderer = i.GetComponent("SpriteRenderer");
+				sr.color = Color.white;
+			}
+			
+			MyAStar.Get().CreatePath();
+		}
+	}
+}
+
+private function CreateTiles() {
 	_tiles = new Tile[_mallWidth, _mallHeight];
 		
 	for (var x = 0; x < _mallWidth; x++) {
@@ -54,13 +82,4 @@ function Awake()
 		_tiles[x, y] = castedTile;
 		}
 	}
-	
-	Debug.Log("_Tiles count : " + _tiles.length);
-	
-	
-	MyAStar.Get().Init();
-}
-
-function Start() {
-	
 }

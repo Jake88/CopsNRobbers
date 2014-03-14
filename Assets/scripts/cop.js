@@ -4,6 +4,7 @@ var _cost : float;
 var _minDamage : float;
 var _maxDamage : float;
 var _attackSpeed : float;
+var _curTile : Tile;
 
 private var _target : Transform;
 private var _attackCooldown : float;
@@ -35,8 +36,8 @@ function Update () {
 	// check if we have a traget
 	if (_target) {
 		// aim at robber
-		var rotation : Quaternion = Quaternion.LookRotation(_target.position - transform.position, transform.TransformDirection(new Vector3(90,0,0)));
-        transform.rotation =   new Quaternion(0, 0, rotation.z, rotation.w);
+		   	transform.rotation = Quaternion.LookRotation(Vector3.forward, _target.transform.position - transform.position);
+
        
 		// if so check if we are off attack cooldown
 		if (Time.time > _attackCooldown){
@@ -50,7 +51,6 @@ function Attack() {
 	if (_target) {
 		// check to see what damage between min - max we will deal
 		var dmg = Random.Range(_minDamage, _maxDamage);
-		Debug.Log(dmg);
 		// call the targets TakeDamage function and pass in the damage value
 		var rob : Robber = _target.GetComponent("Robber");
 		if(rob.TakeDamage(dmg)) {
