@@ -6,8 +6,10 @@ var _mallWidth : int;
 var _mallHeight : int;
 var _startTile : Tile;
 var _endTile : Tile;
+var _mask : LayerMask;
 var _tiles : Tile[,];
 var _path = new Array();
+
 private var _astar : MyAStar;
 
 public static function Get() : LevelMaster
@@ -29,29 +31,33 @@ function Awake()
     Instance = this;
 
 	CreateTiles();
-	MyAStar.Get().Init();
+	FloodFiller.Get().CreatePaths();
 }
 
 function Update() {
 	if (Input.GetMouseButtonDown(0)) {
 		
-		var x = Random.Range(0, _mallWidth-1);
-		var y = Random.Range(0, _mallHeight-1);
-		var tile : Tile = _tiles[x,y];
-		Debug.Log(tile._occupied);
-		if (!tile._occupied) {
-			var cop : GameObject = Instantiate(Resources.Load("EnglishBobby"));
-			cop.transform.position.x = x;
-			cop.transform.position.y = y;
-			
-			for (i in _tiles) {
-				var j : Tile = i;
-				var sr : SpriteRenderer = i.GetComponent("SpriteRenderer");
-				sr.color = Color.white;
-			}
-			
-			MyAStar.Get().CreatePath();
-		}
+		var ray : Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+	    var hit : RaycastHit2D = Physics2D.GetRayIntersection(ray, 100, _mask);
+	    
+	    if (hit && hit.transform.tag == "Tile") {
+	    	Debug.Log(hit.transform.tag);
+	    	var tile : Tile = hit.transform.GetComponent("Tile");
+	    	Debug.Log(tile);
+	    	if(!tile._occupied) {
+	    		tile._occupied = true;
+	    		if(FloodFiller.Get().IsPathPossible()) {
+	    			Debug.Log("Path is possible");
+		    		var cop : GameObject = Instantiate(Resources.Load("EnglishBobby"));
+					cop.transform.position.x = tile.transform.position.x;
+					cop.transform.position.y = tile.transform.position.y;
+					FloodFiller.Get().CreatePaths();
+				} else {
+					Debug.Log("Path not possible");
+					tile._occupied = false;
+				}
+	    	}
+	    }
 	}
 }
 

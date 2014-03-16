@@ -4,7 +4,7 @@ var _curHP : float;
 var _maxHP : float;
 var _stealAmount : int;
 var _bountyValue : int;
-var _returning : boolean;
+var _returning : boolean = false;
 
 private var _healthBar : Health;
 private var _curTile : Tile;
