@@ -11,7 +11,7 @@ private var _curTile : Tile;
 
 function Start () {
 	_curHP = _maxHP;
-	_healthBar = transform.FindChild("hp-foreground").GetComponent("Health");
+	_healthBar = transform.FindChild("hp-foreground").GetComponent("Health") as Health;
 }
 
 function Update () {
@@ -19,10 +19,11 @@ function Update () {
 	
 }
 
-function TakeDamage(damage:float) {
+function TakeDamage(damage:float) : boolean {
 	_curHP -= damage;
 	if (_curHP <= 0) {
 		//die();
 		return true;
 	}
+	return false;
 }

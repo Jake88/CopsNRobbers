@@ -10,16 +10,19 @@ class FloodFiller
         return Instance;
     }
 
-    private function FloodFiller() {}
+    private function FloodFiller() {
+    }
     
     function CreatePaths() {
     	Reset();
     	// Create 'To Bank' path
+    	SetDistance(LevelMaster.Get()._endTile);
     	_openList.Add(LevelMaster.Get()._endTile);
     	FillRecursive(false);
     	
     	Reset();
     	// Create 'To Exit' path
+    	SetDistance(LevelMaster.Get()._startTile);
     	_openList.Add(LevelMaster.Get()._startTile);
     	FillRecursive(true);
     }
@@ -85,7 +88,7 @@ class FloodFiller
     function CheckPathRecursive() : boolean {
     	var possible : boolean = false;
     	if(_openList.length > 0) {
-	    	var tile : Tile = _openList[_openList.length-1];
+	    	var tile : Tile = _openList[_openList.length-1] as Tile;
 	    	_openList.Remove(tile);
 	    	_closedList.Add(tile);
 	    	
@@ -125,9 +128,9 @@ class FloodFiller
 	}
 	
 	private function GetLowestDistanceTile() {
-		var tile : Tile = _openList[0];
+		var tile : Tile = _openList[0] as Tile;
 		for (var i = 1; i < _openList.length; i++) {
-			var tileToTest : Tile = _openList[i];
+			var tileToTest : Tile = _openList[i] as Tile;
 			if (tile._distance > tileToTest._distance) {
 				tile = tileToTest;
 			}
@@ -143,19 +146,19 @@ class FloodFiller
 		return false;
 	}
 
-	private function IsInOpenList(x, y) {
-		return LevelMaster.Get()._tiles[x, y] in _openList;
+	private function IsInOpenList(x:int, y:int) : boolean {
+		return (LevelMaster.Get()._tiles[x, y] in _openList);
 	}
 
-	private function IsInClosedList(x, y) {
-		return LevelMaster.Get()._tiles[x, y] in _closedList;
+	private function IsInClosedList(x:int, y:int) : boolean{
+		return (LevelMaster.Get()._tiles[x, y] in _closedList);
 	}
 
-	private function IsOccupied(x:int, y:int) {
+	private function IsOccupied(x:int, y:int) : boolean{
 		return LevelMaster.Get()._tiles[x, y]._occupied;
 	}
 
-	private function IsWithinGrid(x:int, y:int) {
+	private function IsWithinGrid(x:int, y:int) : boolean {
 		return x < LevelMaster.Get()._mallWidth && x >= 0 && y < LevelMaster.Get()._mallHeight && y >= 0;
 	}
 	

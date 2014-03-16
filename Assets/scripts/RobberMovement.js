@@ -6,7 +6,7 @@ var _moveSpeed : float;
 var _robber : Robber;
 
 function Start () {
-	_robber = this.GetComponent("Robber");
+	_robber = this.GetComponent("Robber") as Robber;
 	_curTile = LevelMaster.Get()._startTile;
    	transform.rotation = Quaternion.LookRotation(Vector3.forward, _curTile.transform.position - transform.position);
 }

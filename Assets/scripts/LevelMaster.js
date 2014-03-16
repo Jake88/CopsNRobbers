@@ -10,8 +10,6 @@ var _mask : LayerMask;
 var _tiles : Tile[,];
 var _path = new Array();
 
-private var _astar : MyAStar;
-
 public static function Get() : LevelMaster
 
 {
@@ -42,13 +40,13 @@ function Update() {
 	    
 	    if (hit && hit.transform.tag == "Tile") {
 	    	Debug.Log(hit.transform.tag);
-	    	var tile : Tile = hit.transform.GetComponent("Tile");
+	    	var tile : Tile = hit.transform.GetComponent("Tile") as Tile;
 	    	Debug.Log(tile);
 	    	if(!tile._occupied) {
 	    		tile._occupied = true;
 	    		if(FloodFiller.Get().IsPathPossible()) {
 	    			Debug.Log("Path is possible");
-		    		var cop : GameObject = Instantiate(Resources.Load("EnglishBobby"));
+		    		var cop : GameObject = Instantiate(Resources.Load("EnglishBobby")) as GameObject;
 					cop.transform.position.x = tile.transform.position.x;
 					cop.transform.position.y = tile.transform.position.y;
 					FloodFiller.Get().CreatePaths();

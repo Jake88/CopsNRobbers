@@ -52,7 +52,7 @@ function Attack() {
 		// check to see what damage between min - max we will deal
 		var dmg = Random.Range(_minDamage, _maxDamage);
 		// call the targets TakeDamage function and pass in the damage value
-		var rob : Robber = _target.GetComponent("Robber");
+		var rob : Robber = _target.GetComponent("Robber") as Robber;
 		if(rob.TakeDamage(dmg)) {
 			// If the take damage function returns true(target is dead), set target to null.
 			_target = null;	
