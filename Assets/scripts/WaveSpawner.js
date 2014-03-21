@@ -40,4 +40,9 @@ function Update () {
 
 public function MidnightTrigger() {
 	Debug.Log("spawn the midnight wave");
+	var wave = WaveLoader._levelWaves[_curDifficulty];
+	
+	for(var name : String in wave.robberNames) {
+		Instantiate(Resources.Load(name));
+	}
 }

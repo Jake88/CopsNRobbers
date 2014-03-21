@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--IMPORTANT: All difficulties must contain the same number of waves-->
+<waves>
+	<wave>
+		<robber name="SchoolBully" amount="4"></robber>
+	</wave>
+	<wave>
+		<robber name="SchoolBully" amount="8"></robber>
+	</wave>
+</waves>

@@ -12,6 +12,7 @@ private var _curTile : Tile;
 function Start () {
 	_curHP = _maxHP;
 	_healthBar = transform.FindChild("hp-foreground").GetComponent("Health") as Health;
+	this.transform.position = LevelMaster.Get()._startTile.transform.position;
 }
 
 function Update () {
