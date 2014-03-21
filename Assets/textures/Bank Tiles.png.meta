@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0f5d5f7034ad18d45b66a56d124c2769
+guid: 1b7a2936d45f610459738a54aa239bae
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -35,7 +35,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: .5, y: .5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings:
@@ -45,23 +45,41 @@ TextureImporter:
     compressionQuality: 50
   spriteSheet:
     sprites:
-    - name: SchoolBully_0
+    - name: BankTiles_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 46
-        height: 34
-      alignment: 0
-      pivot: {x: 0, y: 0}
-    - name: SchoolBully_1
-      rect:
-        serializedVersion: 2
-        x: 102
+        x: 1
         y: 2
-        width: 47
-        height: 36
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
+    - name: BankTiles_2
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 2
+        width: 65
+        height: 64
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: BankTiles_0
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 2
+        width: 65
+        height: 64
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: BankTiles_3
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 0
+        width: 65
+        height: 64
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 

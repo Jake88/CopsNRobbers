@@ -1,6 +1,5 @@
 ﻿#pragma strict
 
-
 private static var Instance : LevelMaster = null;
 var _mallWidth : int;
 var _mallHeight : int;
@@ -9,6 +8,11 @@ var _endTile : Tile;
 var _mask : LayerMask;
 var _tiles : Tile[,];
 var _path = new Array();
+var _bankSprites : Sprite[];
+var _wallSprite : Sprite;
+var _gameTime : float;
+var _secondsBetweenMidnight : int;
+private var _midnightTimer : float;
 
 public static function Get() : LevelMaster
 
@@ -27,14 +31,21 @@ public function LevelMaster()
 function Awake()
 {
     Instance = this;
+    _mallHeight += 2;	// Allow for the addition of the bank and the mall entrance.
+    _midnightTimer = Time.time + _secondsBetweenMidnight;
 
 	CreateTiles();
 	FloodFiller.Get().CreatePaths();
 }
 
 function Update() {
+	_gameTime += Time.deltaTime;
+	if(_midnightTimer < Time.time) {
+		_midnightTimer = Time.time + _secondsBetweenMidnight;
+		// fire midnight triggers.
+		WaveSpawner.Get().MidnightTrigger();
+	}
 	if (Input.GetMouseButtonDown(0)) {
-		
 		var ray : Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 	    var hit : RaycastHit2D = Physics2D.GetRayIntersection(ray, 100, _mask);
 	    
@@ -64,23 +75,46 @@ private function CreateTiles() {
 		
 	for (var x = 0; x < _mallWidth; x++) {
 		for (var y = 0; y <  _mallHeight; y++) {
-			var tile : GameObject = Instantiate(Resources.Load("Mall Tile"));
+			var tile : GameObject;
+			if (y == _mallHeight-1 && x == Mathf.FloorToInt(_mallWidth/2)) {
+				// center of the top row means this tile is the entrance.
+				tile = Instantiate(Resources.Load("Start Tile")) as GameObject;
+			} else {
+				tile = Instantiate(Resources.Load("Mall Tile")) as GameObject;
+			}
+			var castedTile:Tile = tile.GetComponent("Tile") as Tile;
+			var sr : SpriteRenderer;
 			tile.transform.position.x = x;
 			tile.transform.position.y = y;
 			
-			var castedTile:Tile = tile.GetComponent("Tile");
+			
 			castedTile._x = x;
 			castedTile._y = y;
 		
 			// check if this tile is the entrance or bank of the mall.
-			if (y == 0 && x == Mathf.FloorToInt(_mallWidth/2)) {
-				// center of the bottom row means this tile is the bank.
-				tile.tag = ("EndTile");
-				_endTile = castedTile;
-			} else if (y == _mallHeight-1 && x == Mathf.FloorToInt(_mallWidth/2)) {
-				// center of the top row means this tile is the entrance.
-				tile.tag = ("StartTile");
-				_startTile = castedTile;
+			if (y == 0) {
+				sr = tile.GetComponent("SpriteRenderer") as SpriteRenderer;
+				if(x == Mathf.FloorToInt(_mallWidth/2)) {
+					// center of the bottom row means this tile is the bank.
+					tile.tag = ("EndTile");
+					_endTile = castedTile;
+					sr.sprite = _bankSprites[0];
+				} else {
+					if (x == 0) {
+						sr.sprite = _bankSprites[1];
+					} else {
+						sr.sprite = _bankSprites[Mathf.Round(Random.Range(2, _bankSprites.Length))];
+					}
+					castedTile._occupied = true;
+				}
+			} else if (y == _mallHeight-1) {
+				if (x == Mathf.FloorToInt(_mallWidth/2)) {
+					_startTile = castedTile;
+				} else {
+					sr = tile.GetComponent("SpriteRenderer") as SpriteRenderer;
+					sr.sprite = _wallSprite;
+					castedTile._occupied = true;
+				}
 			}
 			
 		_tiles[x, y] = castedTile;
