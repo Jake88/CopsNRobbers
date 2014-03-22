@@ -23,8 +23,18 @@ function Update () {
 function TakeDamage(damage:float) : boolean {
 	_curHP -= damage;
 	if (_curHP <= 0) {
-		//die();
+		Die();
 		return true;
 	}
 	return false;
+}
+
+function Die() {
+	// Give player bounty money
+	// Drop stolen money if this robber was returning
+	GameObject.Destroy(this.gameObject);
+}
+
+function Escape() {
+	GameObject.Destroy(this.gameObject);
 }

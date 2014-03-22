@@ -25,6 +25,10 @@ function Update () {
 			_robber._returning = true;
 			var sr : SpriteRenderer = GetComponent("SpriteRenderer") as SpriteRenderer;
 			sr.sprite = _returningSprite;
+		} else if (_robber._returning && _curTile == LevelMaster.Get()._startTile) {
+			Debug.Log("Escape");
+			_robber.Escape();
+			return;
 		}
 	
 		_previousTile = _curTile.transform.position;
