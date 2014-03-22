@@ -32,9 +32,14 @@ function TakeDamage(damage:float) : boolean {
 function Die() {
 	// Give player bounty money
 	// Drop stolen money if this robber was returning
-	GameObject.Destroy(this.gameObject);
+	this.Destroy();
 }
 
 function Escape() {
+	this.Destroy();
+}
+
+function Destroy() {
+	this.transform.position = new Vector3(-100,-100,0);
 	GameObject.Destroy(this.gameObject);
 }

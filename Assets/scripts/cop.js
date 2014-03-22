@@ -6,7 +6,8 @@ var _maxDamage : float;
 var _attackSpeed : float;
 var _curTile : Tile;
 
-private var _target : Transform;
+private var _targets = new Array();
+private var _target : Robber;
 private var _attackCooldown : float;
 private var _anim : Animator;
 
@@ -15,20 +16,30 @@ function Start () {
 	_attackSpeed /= 3;
 }
 
-function OnTriggerStay2D (other : Collider2D) {
+function OnTriggerEnter2D (other : Collider2D) {
 	// check if the Collider is a robber and make sure we don't already have a target
-	if(other.gameObject.tag == "Robber" && !_target) {
+	if(other.gameObject.tag == "Robber") {
 		// set this Collider as our target
-		_target = other.gameObject.transform;
+		_targets.Add(other.gameObject.GetComponent("Robber"));
 	}
 		
 }
 
 function OnTriggerExit2D (other : Collider2D) {
 	// check if the Collider is our current target
-	if (other.gameObject.transform == _target) {
+	if (other.gameObject.tag == "Robber") {
 		// Set target to null
-		_target = null;
+		_targets.Remove(other.gameObject.GetComponent("Robber"));
+	}
+}
+
+function SetTarget() {
+	 _target = null;
+	
+	for ( var current : Robber in _targets) {
+		if (!_target || _target._curHP > current._curHP) {
+			_target = current;
+		}
 	}
 }
 
@@ -37,12 +48,13 @@ function Update () {
 	if (_target) {
 		// aim at robber
 		   	transform.rotation = Quaternion.LookRotation(Vector3.forward, _target.transform.position - transform.position);
-
        
 		// if so check if we are off attack cooldown
 		if (Time.time > _attackCooldown){
 			Attack();
 		}
+	} else {
+	 SetTarget();
 	}
 }
 
