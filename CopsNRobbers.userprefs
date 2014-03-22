@@ -1,11 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\other\waves\LevelOneWaves.xml">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\WaveSpawner.js">
     <Files>
       <File FileName="Assets\other\waves\GenericWaves.xml" Line="1" Column="1" />
       <File FileName="Assets\scripts\Wave.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\WaveLoader.js" Line="12" Column="2" />
+      <File FileName="Assets\scripts\WaveLoader.js" Line="23" Column="43" />
       <File FileName="Assets\other\waves\LevelOneWaves.xml" Line="6" Column="9" />
+      <File FileName="Assets\scripts\WaveSpawner.js" Line="59" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

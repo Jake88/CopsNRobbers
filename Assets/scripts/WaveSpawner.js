@@ -1,12 +1,15 @@
 ﻿#pragma strict
 
 private static var Instance : WaveSpawner = null;
-var _waves : String[];
 var _curDifficulty : int;
 var _timeBetweenSpawns : int;
-var _spawnRandomness : float;
-var _spawnDelay : float;
+var _genericSpawnRandomness : float;
+var _firstSpawnDelay : float;
 private var _spawnTimer : float;
+private var _spawnList = new Array();
+private var _spawnDelay : float = 0;
+
+
 
 
 public static function Get() : WaveSpawner
@@ -28,13 +31,25 @@ function Awake() {
 }
 
 function Start () {
-	_spawnTimer = Time.time + _spawnDelay;
+	_spawnTimer = Time.time + _firstSpawnDelay;
 }
 
 function Update () {
 	if (_spawnTimer < Time.time) {
-		_spawnTimer = Time.time + _timeBetweenSpawns + Random.Range(-_spawnRandomness, _spawnRandomness);
-		// spawn an enemy based on current difficulty
+		_spawnTimer = Time.time + _timeBetweenSpawns + Random.Range(-_genericSpawnRandomness, _genericSpawnRandomness);
+		// add a robber to the spawn list based on the generic wave list
+		var wave = WaveLoader._genericWaves[_curDifficulty];
+		for(var name : String in wave.robberNames) {
+			_spawnList.Add(name);
+			
+			Debug.Log(_spawnList.length);
+		}
+	}
+	
+	if (_spawnList.length > 0 && Time.time > _spawnDelay) {
+		_spawnDelay = Time.time + 0.2f;
+		Instantiate(Resources.Load(_spawnList[_spawnList.length-1] as String));
+		_spawnList.pop();
 	}
 }
 
@@ -43,6 +58,7 @@ public function MidnightTrigger() {
 	var wave = WaveLoader._levelWaves[_curDifficulty];
 	
 	for(var name : String in wave.robberNames) {
-		Instantiate(Resources.Load(name));
+		_spawnList.Add(name);
+		Debug.Log(_spawnList.length);
 	}
 }
