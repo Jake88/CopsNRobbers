@@ -140,7 +140,7 @@ class FloodFiller
 	
 	private function IsValidTile(x:int, y:int) {
 		// Check if the tile is within the bounds of the array.
-		if(IsWithinGrid(x,y) && !IsOccupied(x,y) && !IsInClosedList(x,y) && !IsInOpenList(x,y)) {
+		if(GameUtils.IsWithinGrid(x,y) && !GameUtils.IsOccupied(x,y) && !IsInClosedList(x,y) && !IsInOpenList(x,y)) {
 			return true;
 		}
 		return false;
@@ -152,14 +152,6 @@ class FloodFiller
 
 	private function IsInClosedList(x:int, y:int) : boolean{
 		return (LevelMaster.Get()._tiles[x, y] in _closedList);
-	}
-
-	private function IsOccupied(x:int, y:int) : boolean{
-		return LevelMaster.Get()._tiles[x, y]._occupied;
-	}
-
-	private function IsWithinGrid(x:int, y:int) : boolean {
-		return x < LevelMaster.Get()._mallWidth && x >= 0 && y < LevelMaster.Get()._mallHeight && y >= 0;
 	}
 	
 	function Reset() {
