@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<shapes>
+	<shape id="Zed">
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="-1" y="0"/>
+			<tile x="-1" y="1"/>
+			<tile x="-2" y="1"/>
+		</rotation>
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="0" y="1"/>
+			<tile x="1" y="1"/>
+			<tile x="1" y="2"/>
+		</rotation>
+	</shape>
+	<shape id="ReverseZed">
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="-1" y="0"/>
+			<tile x="-1" y="-1"/>
+			<tile x="-2" y="-1"/>
+		</rotation>
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="0" y="1"/>
+			<tile x="-1" y="1"/>
+			<tile x="-1" y="2"/>
+		</rotation>
+	</shape>
+	<shape id="Square">
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="-1" y="0"/>
+			<tile x="0" y="-1"/>
+			<tile x="-1" y="-1"/>
+		</rotation>
+	</shape>
+	<shape id="Straight">
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="-1" y="0"/>
+			<tile x="-2" y="0"/>
+			<tile x="-3" y="0"/>
+		</rotation>
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="0" y="1"/>
+			<tile x="0" y="2"/>
+			<tile x="0" y="3"/>
+		</rotation>
+	</shape>
+	<shape id="Tee">
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="-1" y="1"/>
+			<tile x="0" y="1"/>
+			<tile x="1" y="1"/>
+		</rotation>
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="0" y="1"/>
+			<tile x="0" y="2"/>
+			<tile x="-1" y="1"/>
+		</rotation>
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="-1" y="0"/>
+			<tile x="-2" y="0"/>
+			<tile x="-1" y="1"/>
+		</rotation>
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="0" y="1"/>
+			<tile x="0" y="2"/>
+			<tile x="1" y="1"/>
+		</rotation>
+	</shape>
+	<shape id="El">
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="-1" y="0"/>
+			<tile x="-1" y="1"/>
+			<tile x="-1" y="2"/>
+		</rotation>
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="0" y="1"/>
+			<tile x="1" y="1"/>
+			<tile x="2" y="1"/>
+		</rotation>
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="0" y="1"/>
+			<tile x="0" y="2"/>
+			<tile x="-1" y="2"/>
+		</rotation>
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="0" y="1"/>
+			<tile x="1" y="0"/>
+			<tile x="2" y="0"/>
+		</rotation>
+	</shape>
+	<shape id="ReverseEl">
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="-1" y="0"/>
+			<tile x="0" y="1"/>
+			<tile x="0" y="2"/>
+		</rotation>
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="-1" y="0"/>
+			<tile x="-2" y="0"/>
+			<tile x="-2" y="1"/>
+		</rotation>
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="0" y="1"/>
+			<tile x="0" y="2"/>
+			<tile x="1" y="2"/>
+		</rotation>
+		<rotation>
+			<tile x="0" y="0"/>
+			<tile x="0" y="1"/>
+			<tile x="-1" y="0"/>
+			<tile x="-2" y="0"/>
+		</rotation>
+	</shape>
+</shapes>

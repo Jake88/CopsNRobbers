@@ -4,7 +4,7 @@ var _cost : float;
 var _minDamage : float;
 var _maxDamage : float;
 var _attackSpeed : float;
-var _curTile : Tile;
+var _tile : Tile;
 
 private var _targets = new Array();
 private var _target : Robber;
@@ -73,4 +73,10 @@ function Attack() {
 		_attackCooldown = Time.time + _attackSpeed;
 		// call the fire animation of this tower
 	}
+}
+
+function Sell() {
+	// Give player the money.
+	_tile._occupied = false;
+	_tile._occupiedUnit = null;
 }

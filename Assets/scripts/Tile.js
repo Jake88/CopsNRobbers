@@ -3,6 +3,7 @@
 var _nextTileToBank : Tile;
 var _nextTileToExit : Tile;
 var _occupied : boolean;
+var _occupiedUnit : GameObject;
 var _x : int;
 var _y : int;
 var _distance : int;

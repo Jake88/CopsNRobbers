@@ -14,7 +14,7 @@ function Start () {
 
 private function LoadGenericWaves() {
 	var xmlDoc : XmlDocument = new XmlDocument();
-  	xmlDoc.Load("Assets/other/waves/GenericWaves.xml");
+  	xmlDoc.Load("Assets/other/xml/GenericWaves.xml");
   	var root : XmlNode = xmlDoc.DocumentElement;
   	var waveList : XmlNodeList;
   	var robberList : XmlNodeList;
@@ -40,7 +40,7 @@ private function LoadGenericWaves() {
 
 private function LoadLevelWaves() {
 	var xmlDoc : XmlDocument = new XmlDocument();
-  	xmlDoc.Load("Assets/other/waves/" + levelWaveFilename + ".xml");
+  	xmlDoc.Load("Assets/other/xml/" + levelWaveFilename + ".xml");
   	var root : XmlNode = xmlDoc.DocumentElement;
   	var waveList : XmlNodeList;
   	var robberList : XmlNodeList;

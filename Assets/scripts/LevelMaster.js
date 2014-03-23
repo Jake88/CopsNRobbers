@@ -12,6 +12,7 @@ var _bankSprites : Sprite[];
 var _wallSprite : Sprite;
 var _gameTime : float;
 var _secondsBetweenMidnight : int;
+var _currentState : LevelStates;
 private var _midnightTimer : float;
 
 public static function Get() : LevelMaster
@@ -33,6 +34,7 @@ function Awake()
     Instance = this;
     _mallHeight += 2;	// Allow for the addition of the bank and the mall entrance.
     _midnightTimer = Time.time + _secondsBetweenMidnight;
+    _currentState = LevelStates.Building; // Should be NONE. Change when we actually have a building mode.
 
 	CreateTiles();
 	FloodFiller.Get().CreatePaths();
@@ -58,6 +60,7 @@ function Update() {
 	    		if(FloodFiller.Get().IsPathPossible()) {
 	    			Debug.Log("Path is possible");
 		    		var cop : GameObject = Instantiate(Resources.Load("EnglishBobby")) as GameObject;
+		    		tile._occupiedUnit = cop.gameObject;
 					cop.transform.position.x = tile.transform.position.x;
 					cop.transform.position.y = tile.transform.position.y;
 					FloodFiller.Get().CreatePaths();
@@ -120,4 +123,9 @@ private function CreateTiles() {
 		_tiles[x, y] = castedTile;
 		}
 	}
+}
+
+public enum LevelStates{
+	Building,
+	None
 }
