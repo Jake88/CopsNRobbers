@@ -1,20 +1,22 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\Cop.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\NextShapePreview.js">
     <Files>
-      <File FileName="Assets\scripts\InputController.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\Shape.js" Line="5" Column="28" />
-      <File FileName="Assets\scripts\ShopBuilder.js" Line="76" Column="35" />
+      <File FileName="Assets\scripts\InputController.js" Line="23" Column="2" />
+      <File FileName="Assets\scripts\Shape.js" Line="16" Column="22" />
+      <File FileName="Assets\scripts\ShopBuilder.js" Line="44" Column="52" />
       <File FileName="Assets\scripts\Wave.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\WaveLoader.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\WaveSpawner.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\RobberMovement.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\Robber.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\Cop.js" Line="33" Column="3" />
-      <File FileName="Assets\scripts\Shop.js" Line="21" Column="37" />
-      <File FileName="Assets\scripts\LevelMaster.js" Line="66" Column="6" />
-      <File FileName="Assets\scripts\GameUtils.js" Line="20" Column="54" />
-      <File FileName="Assets\scripts\Tile.js" Line="6" Column="12" />
+      <File FileName="Assets\scripts\Cop.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Shop.js" Line="19" Column="39" />
+      <File FileName="Assets\scripts\LevelMaster.js" Line="9" Column="1" />
+      <File FileName="Assets\scripts\GameUtils.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Tile.js" Line="1" Column="1" />
+      <File FileName="Assets\other\xml\Shapes.xml" Line="1" Column="1" />
+      <File FileName="Assets\scripts\NextShapePreview.js" Line="42" Column="41" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
