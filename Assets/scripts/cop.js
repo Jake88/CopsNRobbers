@@ -30,6 +30,7 @@ function OnTriggerExit2D (other : Collider2D) {
 	if (other.gameObject.tag == "Robber") {
 		// Set target to null
 		_targets.Remove(other.gameObject.GetComponent("Robber"));
+		SetTarget();
 	}
 }
 
@@ -54,7 +55,7 @@ function Update () {
 			Attack();
 		}
 	} else {
-	 SetTarget();
+		SetTarget();
 	}
 }
 
