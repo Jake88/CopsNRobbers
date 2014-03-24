@@ -24,7 +24,16 @@ function Awake()
     Instance = this;
 }
 
-
+function OnGUI() {
+	if (GUI.Button (Rect (20,40,80,20), "Rotate")) {
+		_shapes[_nextShape].Rotate();
+		NextShapePreview.Get().ChangeShape(_shapes[_nextShape]);
+	}
+	if (GUI.Button (Rect (20,70,80,20), "New Shape ($250)")) {
+		// check if player can afford the cost. If so:
+			NewNextShape();
+	}
+}
 function Start () {
 	_shapes = new Shape[SHAPE_COUNT];
 	_shapes[0] = new Shape("Zed");
@@ -35,9 +44,7 @@ function Start () {
 	_shapes[5] = new Shape("El");
 	_shapes[6] = new Shape("ReverseEl");
 	NewNextShape();
-}
-
-function Update () {
+	_nextShape = 2;
 }
 
 function Build(selectedTile : Tile) {
@@ -91,5 +98,4 @@ function Build(selectedTile : Tile) {
 private function NewNextShape() {
 	_nextShape = Random.Range(0, SHAPE_COUNT);
 	NextShapePreview.Get().ChangeShape(_shapes[_nextShape]);
-	Debug.Log(_shapes[_nextShape]._name);
 }
