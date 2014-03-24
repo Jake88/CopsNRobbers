@@ -91,4 +91,5 @@ function Build(selectedTile : Tile) {
 private function NewNextShape() {
 	_nextShape = Random.Range(0, SHAPE_COUNT);
 	NextShapePreview.Get().ChangeShape(_shapes[_nextShape]);
+	Debug.Log(_shapes[_nextShape]._name);
 }

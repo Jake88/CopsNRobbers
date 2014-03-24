@@ -6,8 +6,10 @@ public class Shape {
 	private var _rotations : int;
 	private var _currentRotation : int;
 	private var _tiles : Vector2[,];
+	var _name : String;
 	
 	public function Shape(shapeName : String) {
+	_name = shapeName;
 		var xmlDoc : XmlDocument = new XmlDocument();
 	  	xmlDoc.Load("Assets/other/xml/Shapes.xml");
 	  	var root : XmlNode = xmlDoc.DocumentElement;
