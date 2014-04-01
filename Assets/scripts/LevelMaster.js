@@ -13,7 +13,9 @@ var _wallSprite : Sprite;
 var _gameTime : float;
 var _secondsBetweenMidnight : int;
 var _currentState : LevelStates;
+var _transparentOverlay : Transform;
 private var _midnightTimer : float;
+private var _curTimescale : float;
 
 public static function Get() : LevelMaster
 
@@ -34,10 +36,30 @@ function Awake()
     Instance = this;
     _mallHeight += 2;	// Allow for the addition of the bank and the mall entrance.
     _midnightTimer = Time.time + _secondsBetweenMidnight;
-    _currentState = LevelStates.Building; // Should be NONE. Change when we actually have a building mode.
+    _currentState = LevelStates.None; // Should be NONE. Change when we actually have a building mode.
+    _curTimescale = 1.0;
+    _transparentOverlay.renderer.enabled = false;
 
 	CreateTiles();
 	FloodFiller.Get().CreatePaths();
+}
+
+function OnGUI() {
+	if (GUI.Button (Rect (20,140,80,20), "Normal")) {
+		// Change the game speed
+		_curTimescale = 1.0;
+		ChangeGameSpeed();
+	}
+	if (GUI.Button (Rect (20,170,80,20), "Fast")) {
+		// Change the game speed
+		_curTimescale = 1.5;
+		ChangeGameSpeed();
+	}
+	if (GUI.Button (Rect (20,200,80,20), "Fastest")) {
+		// Change the game speed
+		_curTimescale = 2.0;
+		ChangeGameSpeed();
+	}
 }
 
 function Update() {
@@ -52,22 +74,14 @@ function Update() {
 	    var hit : RaycastHit2D = Physics2D.GetRayIntersection(ray, 100, _mask);
 	    
 	    if (hit && hit.transform.tag == "Tile") {
-	    	Debug.Log(hit.transform.tag);
 	    	var tile : Tile = hit.transform.GetComponent("Tile") as Tile;
-	    	Debug.Log(tile);
-	    	if(!tile._occupied) {
+	    	if(tile._isAvailable) {
 	    		tile._occupied = true;
-	    		if(FloodFiller.Get().IsPathPossible()) {
-	    			Debug.Log("Path is possible");
-		    		var cop : GameObject = Instantiate(Resources.Load("EnglishBobby")) as GameObject;
-		    		tile._occupiedUnit = cop.gameObject;
-					cop.transform.position.x = tile.transform.position.x;
-					cop.transform.position.y = tile.transform.position.y;
-					FloodFiller.Get().CreatePaths();
-				} else {
-					Debug.Log("Path not possible");
-					tile._occupied = false;
-				}
+	    		var cop : GameObject = Instantiate(Resources.Load("EnglishBobby")) as GameObject;
+	    		tile._occupiedUnit = cop.gameObject;
+				cop.transform.position.x = tile.transform.position.x;
+				cop.transform.position.y = tile.transform.position.y;
+				FloodFiller.Get().CreatePaths();
 	    	}
 	    }
 	}
@@ -96,6 +110,7 @@ private function CreateTiles() {
 		
 			// check if this tile is the entrance or bank of the mall.
 			if (y == 0) {
+				Transform.Destroy(tile.transform.Find("TileOverlay").gameObject);
 				sr = tile.GetComponent("SpriteRenderer") as SpriteRenderer;
 				if(x == Mathf.FloorToInt(_mallWidth/2)) {
 					// center of the bottom row means this tile is the bank.
@@ -114,6 +129,7 @@ private function CreateTiles() {
 				if (x == Mathf.FloorToInt(_mallWidth/2)) {
 					_startTile = castedTile;
 				} else {
+					Transform.Destroy(tile.transform.Find("TileOverlay").gameObject);
 					sr = tile.GetComponent("SpriteRenderer") as SpriteRenderer;
 					sr.sprite = _wallSprite;
 					castedTile._occupied = true;
@@ -122,6 +138,24 @@ private function CreateTiles() {
 			
 		_tiles[x, y] = castedTile;
 		}
+	}
+}
+
+public function ToggleBuildMode() {
+	if (_currentState != LevelStates.Building) {
+		_currentState = LevelStates.Building;
+		_transparentOverlay.renderer.enabled = true;
+		Time.timeScale = 0;
+	} else {
+		_currentState = LevelStates.None;
+		_transparentOverlay.renderer.enabled = false;
+		ChangeGameSpeed();
+	}
+}
+
+private function ChangeGameSpeed() {
+	if (_currentState == LevelStates.None) {
+		Time.timeScale = _curTimescale;
 	}
 }
 

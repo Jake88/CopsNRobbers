@@ -33,6 +33,10 @@ function OnGUI() {
 		// check if player can afford the cost. If so:
 			NewNextShape();
 	}
+	if (GUI.Button (Rect (20,110,80,20), "Build Mode")) {
+		// Enter the build mode:
+			LevelMaster.Get().ToggleBuildMode();
+	}
 }
 function Start () {
 	_shapes = new Shape[SHAPE_COUNT];
@@ -44,7 +48,6 @@ function Start () {
 	_shapes[5] = new Shape("El");
 	_shapes[6] = new Shape("ReverseEl");
 	NewNextShape();
-	_nextShape = 2;
 }
 
 function Build(selectedTile : Tile) {
@@ -59,11 +62,13 @@ function Build(selectedTile : Tile) {
 		var vec2 : Vector2 = vectors[i];
 		positionToTest.x = selectedTile._x + vec2.x;
 		positionToTest.y = selectedTile._y + vec2.y;
+		Debug.Log("X:" + positionToTest.x + " Y:" + positionToTest.y);
 	
-		if (GameUtils.IsValidTile(positionToTest.x, positionToTest.y)) {
+		if (GameUtils.IsValidTile(positionToTest.x, positionToTest.y) && LevelMaster().Get()._tiles[positionToTest.x,positionToTest.y]._isAvailable) {
 			tiles[i] = LevelMaster().Get()._tiles[positionToTest.x,positionToTest.y];
 		} else {
 			validPos = false;
+			i = vectors.length;	//break out of the for loop.
 		}
 	}
 	

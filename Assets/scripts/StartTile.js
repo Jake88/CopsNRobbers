@@ -24,6 +24,7 @@ public class StartTile extends Tile {
 	}
 
 	function OnTriggerExit2D (other : Collider2D) {
+		Debug.Log("Exiting");
 		if (other.transform.tag == "Robber") {
 			_collisionCount--;
 			if (_collisionCount < 1) { 

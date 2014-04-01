@@ -36,10 +36,11 @@ function Update () {
 	    	
 	    	switch(LevelMaster.Get()._currentState) {
 	    		case LevelStates.Building :
+	    			Debug.Log("State = Building");
 	    			ShopBuilder.Get().Build(tile);
 	    		break;
 	    		case LevelStates.None :
-	    		
+	    			Debug.Log("State = None");
 	    		break;
 	    	}
 	    	//call static builder method and pass in the tile

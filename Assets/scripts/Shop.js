@@ -23,7 +23,7 @@ function Init(tiles : Tile[]) {
 		shopTile.position.y = tiles[i]._y;
 		vecs[i] = shopTile.position;
 	}
-	transform.position = GameUtils.CenterPointBetweenManyVectors(vecs);
+	//transform.position = GameUtils.CenterPointBetweenManyVectors(vecs);
 }
 
 function Sell() {

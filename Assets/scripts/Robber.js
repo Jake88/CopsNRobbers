@@ -5,6 +5,7 @@ var _maxHP : float;
 var _stealAmount : int;
 var _bountyValue : int;
 var _returning : boolean = false;
+var _dead : boolean = false;
 
 private var _healthBar : Health;
 private var _curTile : Tile;
@@ -16,8 +17,11 @@ function Start () {
 }
 
 function Update () {
-	_healthBar.UpdateLength(_maxHP, _curHP);
-	
+	if (_dead) {
+		GameObject.Destroy(this.gameObject);
+	} else {
+		_healthBar.UpdateLength(_maxHP, _curHP);
+	}
 }
 
 function TakeDamage(damage:float) : boolean {
@@ -41,5 +45,5 @@ function Escape() {
 
 function Destroy() {
 	this.transform.position = new Vector3(-100,-100,0);
-	GameObject.Destroy(this.gameObject);
+	_dead = true;
 }

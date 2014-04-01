@@ -31,7 +31,7 @@ public function ChangeShape(shape : Shape) {
 	Clear();
 	// Pick a 'start' or 'relative' tile
 	var x : int = -5;	// Will definitely be overridden.
-	var y : int = 5;		// will definitely be overridden.
+	var y : int = 5;	// will definitely be overridden.
 	for (var vec : Vector2 in vectors) {
 		if(vec.x > x) {
 			x = vec.x;
@@ -42,7 +42,6 @@ public function ChangeShape(shape : Shape) {
 	}
 	x = 3 - x;
 	y = -y;
-	Debug.Log("x=" + x + ", y=" + y);
 	
 	// grab the tiles around it (from vectors array)
 	// set their renderer.enabled to true
