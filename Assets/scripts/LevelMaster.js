@@ -13,7 +13,6 @@ var _wallSprite : Sprite;
 var _gameTime : float;
 var _secondsBetweenMidnight : int;
 var _currentState : LevelStates;
-var _transparentOverlay : Transform;
 private var _midnightTimer : float;
 private var _curTimescale : float;
 
@@ -38,7 +37,6 @@ function Awake()
     _midnightTimer = Time.time + _secondsBetweenMidnight;
     _currentState = LevelStates.None; // Should be NONE. Change when we actually have a building mode.
     _curTimescale = 1.0;
-    _transparentOverlay.renderer.enabled = false;
 
 	CreateTiles();
 	FloodFiller.Get().CreatePaths();
@@ -48,11 +46,6 @@ function OnGUI() {
 	if (GUI.Button (Rect (20,140,80,20), "Normal")) {
 		// Change the game speed
 		_curTimescale = 1.0;
-		ChangeGameSpeed();
-	}
-	if (GUI.Button (Rect (20,170,80,20), "Fast")) {
-		// Change the game speed
-		_curTimescale = 1.5;
 		ChangeGameSpeed();
 	}
 	if (GUI.Button (Rect (20,200,80,20), "Fastest")) {
@@ -141,25 +134,12 @@ private function CreateTiles() {
 	}
 }
 
-public function ToggleBuildMode() {
-	if (_currentState != LevelStates.Building) {
-		_currentState = LevelStates.Building;
-		_transparentOverlay.renderer.enabled = true;
-		Time.timeScale = 0;
-	} else {
-		_currentState = LevelStates.None;
-		_transparentOverlay.renderer.enabled = false;
-		ChangeGameSpeed();
-	}
-}
-
-private function ChangeGameSpeed() {
+public function ChangeGameSpeed() {
 	if (_currentState == LevelStates.None) {
 		Time.timeScale = _curTimescale;
 	}
 }
 
 public enum LevelStates{
-	Building,
 	None
 }

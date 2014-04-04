@@ -34,16 +34,7 @@ function Update () {
 	    if (hit && hit.transform.tag == "Tile") {
 	    	var tile : Tile = hit.transform.GetComponent("Tile") as Tile;
 	    	
-	    	switch(LevelMaster.Get()._currentState) {
-	    		case LevelStates.Building :
-	    			Debug.Log("State = Building");
-	    			ShopBuilder.Get().Build(tile);
-	    		break;
-	    		case LevelStates.None :
-	    			Debug.Log("State = None");
-	    		break;
-	    	}
-	    	//call static builder method and pass in the tile
+	    	BuildManager.Get().CheckBuildPosition(tile);
 	    }
 	}
 }

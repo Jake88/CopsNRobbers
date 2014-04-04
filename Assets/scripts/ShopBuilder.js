@@ -4,6 +4,8 @@ private static var Instance : ShopBuilder = null;
 private static var SHAPE_COUNT : int = 7;
 private static var _nextShape : int;
 private static var _shapes : Shape[];
+private static var _tiles : Tile[];
+private static var _validPos : boolean;
 
 public static function Get() : ShopBuilder
 
@@ -22,20 +24,35 @@ public function ShopBuilder()
 function Awake()
 {
     Instance = this;
+    _tiles = new Tile[0];
 }
 
 function OnGUI() {
 	if (GUI.Button (Rect (20,40,80,20), "Rotate")) {
+		Reset();
 		_shapes[_nextShape].Rotate();
 		NextShapePreview.Get().ChangeShape(_shapes[_nextShape]);
 	}
 	if (GUI.Button (Rect (20,70,80,20), "New Shape ($250)")) {
 		// check if player can afford the cost. If so:
-			NewNextShape();
+		Reset();
+		NewNextShape();
 	}
-	if (GUI.Button (Rect (20,110,80,20), "Build Mode")) {
-		// Enter the build mode:
-			LevelMaster.Get().ToggleBuildMode();
+	
+	if(_tiles.length > 0) {
+		if (_validPos) {
+			if (GUI.Button (Rect (20,240,80,20), "Confirm")) {
+				// Enter the build mode:
+				ConfirmBuild();
+				Reset();
+				BuildManager.Get().ExitBuildMode();
+			}
+		}
+		if (GUI.Button (Rect (20,270,80,20), "Cancel")) {
+			// Enter the build mode:
+			Reset();
+			BuildManager.Get().ExitBuildMode();
+		}
 	}
 }
 function Start () {
@@ -51,12 +68,13 @@ function Start () {
 }
 
 function Build(selectedTile : Tile) {
+	Reset();
 	var vectors = _shapes[_nextShape].GetVectorArray();
 	// Get the tiles relative to the selected tile
-	var tiles = new Tile[Shape.TILES_PER_SHAPE];
+	_tiles = new Tile[Shape.TILES_PER_SHAPE];
 	
 	var positionToTest : Vector2;
-	var validPos : boolean = true;
+	_validPos = true;
 	
 	for (var i = 0; i < vectors.length; i++) {
 		var vec2 : Vector2 = vectors[i];
@@ -64,43 +82,67 @@ function Build(selectedTile : Tile) {
 		positionToTest.y = selectedTile._y + vec2.y;
 		Debug.Log("X:" + positionToTest.x + " Y:" + positionToTest.y);
 	
-		if (GameUtils.IsValidTile(positionToTest.x, positionToTest.y) && LevelMaster().Get()._tiles[positionToTest.x,positionToTest.y]._isAvailable) {
-			tiles[i] = LevelMaster().Get()._tiles[positionToTest.x,positionToTest.y];
+		if (GameUtils.IsValidTile(positionToTest.x, positionToTest.y)) {
+			if(!LevelMaster().Get()._tiles[positionToTest.x,positionToTest.y]._isAvailable) {
+				_validPos = false;
+			}
+			_tiles[i] = LevelMaster().Get()._tiles[positionToTest.x,positionToTest.y];
 		} else {
-			validPos = false;
-			i = vectors.length;	//break out of the for loop.
+			_validPos = false;
 		}
 	}
 	
-	if (validPos) {
+	// Even if all the tiles are available we need to check that
+	// the shop doesn't block off the path completely.
+	if (_validPos) {
 		// are they all valid?
-		for (var tile : Tile in tiles) {
+		for (var tile : Tile in _tiles) {
 			tile._occupied = true;
 		}
 		if(!FloodFiller.Get().IsPathPossible()) {
-			for (var tile : Tile in tiles) {
-				tile._occupied = false;
-			}
-			validPos = false;
+			_validPos = false;
+		}
+		for (var tile : Tile in _tiles) {
+			tile._occupied = false;
 		}
 	}
 	
-	// are they all valid?
-		// if yes: place the shop
-	if (validPos) {
-		var go : GameObject = Instantiate(Resources.Load("DansDiscountDoodadDen")) as GameObject;
-		var shop : Shop = go.GetComponent("Shop") as Shop;
-		shop.Init(tiles);
-		FloodFiller.Get().CreatePaths();
-		NewNextShape();
-		// TODO set tile overlay to green and wait for confirm or cancel button.
+	// Was it a valid position
+	if (_validPos) {
+		for (var tile : Tile  in _tiles) {
+			tile.Highlight(true);
+		}
 	} else {
-		// TODO set tile overlay to red and disable the confirm button.
+		for (var tile : Tile in _tiles) {
+			if(tile != null) {
+				tile.Highlight(false);
+			}
+		}
 	}
-	
+}
+
+private function ConfirmBuild() {
+	for (var tile : Tile in _tiles) {
+		tile._occupied = true;
+	}
+	var go : GameObject = Instantiate(Resources.Load("DansDiscountDoodadDen")) as GameObject;
+	var shop : Shop = go.GetComponent("Shop") as Shop;
+	shop.Init(_tiles);
+	FloodFiller.Get().CreatePaths();
+	NewNextShape();
 }
 
 private function NewNextShape() {
 	_nextShape = Random.Range(0, SHAPE_COUNT);
 	NextShapePreview.Get().ChangeShape(_shapes[_nextShape]);
+}
+
+private function Reset() {
+	for(var tile : Tile in _tiles) {
+		if(tile != null) {
+			tile.Unhighlight();
+			tile = null;
+		}
+	}
+	_tiles = new Tile[0];
 }

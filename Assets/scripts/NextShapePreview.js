@@ -64,7 +64,7 @@ private function SetPosition() {
 	var screenPos : Vector3 = (new Vector3(1, 1, 0));// + worldPos;
 	
 	transform.position = Camera.main.ViewportToWorldPoint(screenPos);
-	transform.position.z = 2;
+	transform.position.z = -0.4;
 	
 	transform.localScale = new Vector3(0.5, 0.5, 1);
 }

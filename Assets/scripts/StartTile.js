@@ -33,5 +33,11 @@ public class StartTile extends Tile {
 			}
 		}
 	}
+	
+	function Highlight(valid : boolean) {}
+
+	function Unhighlight() {}
+	
+	function ToggleOverlay() {}
 
 }
