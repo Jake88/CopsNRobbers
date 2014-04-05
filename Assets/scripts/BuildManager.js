@@ -1,10 +1,10 @@
 ﻿#pragma strict
 
 private static var Instance : BuildManager = null;
-var _shopButtons : Texture[];
-var _copButtons : Texture[];
-var _propButtons : Texture[];
-var _currentBuilding : String;
+var _shopButtons : BuildingButton[];
+var _copButtons : BuildingButton[];
+var _propButtons : BuildingButton[];
+var _currentBuilding : BuildingButton;
 var _currentState : BuildingState;
 var _transparentOverlay : Transform;
 
@@ -41,17 +41,20 @@ function OnGUI() {
 			}
 			
 			for (var i = 0; i < _shopButtons.Length; i++) {
-				if(GUI.Button(Rect(44+(i*44),Screen.height-44,44, 44), _shopButtons[i])){
-					EnterBuildMode(_shopButtons[i].name);
+				if (!MoneyManager.Get().CheckMoney(_shopButtons[i].cost)){
+					Debug.Log(_shopButtons[i].shopName + " disabled");
+					GUI.enabled = false;
 				}
+				if(GUI.Button(Rect(44+(i*44),Screen.height-44,44, 44), _shopButtons[i].texture)){
+					EnterBuildMode(_shopButtons[i]);
+				}
+				GUI.enabled = true;
 			}
 			// display shop buttons on slider
 			// When one of these is clicked,
 				// set the corrersponding building name to _currentBuilding
 				// Change the game mode to building
 				// Hide the 'slider panel' and show the Confirm / Cancel / Rotate / New Shape buttons.
-					//TODO: Make 'building' a state in BuildingState and handle everything to do with 
-						// building in this script.
 		break;
 		case BuildingState.Cops :
 			// display cop buttons on slider
@@ -63,8 +66,8 @@ function OnGUI() {
 	}
 }
 
-private function EnterBuildMode(name : String) {
-	_currentBuilding = name;
+private function EnterBuildMode(building : BuildingButton) {
+	_currentBuilding = building;
 	_currentState = BuildingState.Building;
 	_transparentOverlay.renderer.enabled = true;
 	Time.timeScale = 0;
@@ -75,14 +78,25 @@ private function EnterBuildMode(name : String) {
 }
 
 function ExitBuildMode() {
+	_currentBuilding = null;
 	_currentState = BuildingState.None;
 	_transparentOverlay.renderer.enabled = false;
 	LevelMaster.Get().ChangeGameSpeed();
+	
+	for (var tile : Tile in LevelMaster.Get()._tiles) {
+		tile.HideOverlay();
+	}
 }
 
 function CheckBuildPosition(tile : Tile) {
 	if(_currentState == BuildingState.Building) {
-	
+		if(_currentBuilding.tag == "Shop") {
+			ShopBuilder.Get().Build(tile);
+		} else if (_currentBuilding.tag == "Cop") {
+		
+		} else {
+		
+		}
 	}
 }
 

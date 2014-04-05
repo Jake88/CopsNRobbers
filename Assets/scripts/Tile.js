@@ -37,18 +37,22 @@ function SetAvailability(available : boolean) {
 }
 
 function Highlight(valid : boolean) {
-	if (valid) {
-		_overlaySR.color = LIGHT_GREEN;
-	} else {
-		_overlaySR.color = LIGHT_RED;
+	if(_overlaySR) {
+		if (valid) {
+			_overlaySR.color = LIGHT_GREEN;
+		} else {
+			_overlaySR.color = LIGHT_RED;
+		}
 	}
 }
 
 function Unhighlight() {
-	if (_isAvailable) {
-		_overlaySR.color = DARK_GREEN;
-	} else {
-		_overlaySR.color = DARK_RED;
+	if(_overlaySR) {
+		if (_isAvailable) {
+			_overlaySR.color = DARK_GREEN;
+		} else {
+			_overlaySR.color = DARK_RED;
+		}
 	}
 }
 

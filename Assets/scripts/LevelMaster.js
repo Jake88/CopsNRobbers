@@ -62,7 +62,7 @@ function Update() {
 		// fire midnight triggers.
 		WaveSpawner.Get().MidnightTrigger();
 	}
-	if (Input.GetMouseButtonDown(0)) {
+	/*if (Input.GetMouseButtonDown(0)) {
 		var ray : Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 	    var hit : RaycastHit2D = Physics2D.GetRayIntersection(ray, 100, _mask);
 	    
@@ -77,7 +77,7 @@ function Update() {
 				FloodFiller.Get().CreatePaths();
 	    	}
 	    }
-	}
+	}*/
 }
 
 private function CreateTiles() {
@@ -111,11 +111,7 @@ private function CreateTiles() {
 					_endTile = castedTile;
 					sr.sprite = _bankSprites[0];
 				} else {
-					if (x == 0) {
-						sr.sprite = _bankSprites[1];
-					} else {
-						sr.sprite = _bankSprites[Mathf.Round(Random.Range(2, _bankSprites.Length))];
-					}
+					sr.sprite = _bankSprites[Mathf.Round(Random.Range(2, _bankSprites.Length))];
 					castedTile._occupied = true;
 				}
 			} else if (y == _mallHeight-1) {
@@ -129,7 +125,7 @@ private function CreateTiles() {
 				}
 			}
 			
-		_tiles[x, y] = castedTile;
+			_tiles[x, y] = castedTile;
 		}
 	}
 }
