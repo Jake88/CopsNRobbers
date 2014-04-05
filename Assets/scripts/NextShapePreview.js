@@ -46,6 +46,9 @@ public function ChangeShape(shape : Shape) {
 	// grab the tiles around it (from vectors array)
 	// set their renderer.enabled to true
 	for (var vec : Vector2 in vectors) {
+		if(vec == vectors[0]) {
+			_tiles[(vec.x + x), (vec.y + y)].
+		}
 		_tiles[(vec.x + x), (vec.y + y)].renderer.enabled = true;
 	}
 	
@@ -75,7 +78,7 @@ private function CreateGrid() {
 			var go : GameObject = Instantiate(Resources.Load("TileOverlay")) as GameObject;
 			go.transform.parent = this.transform;
 			//gameObject.renderer.enabled = false;
-			go.transform.position = new Vector3(i-SIZE, j-SIZE, 2);
+			go.transform.position = new Vector3(i-SIZE, j-SIZE, -0.4);
 			_tiles[i,j] = go;
 		}
 	}
