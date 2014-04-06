@@ -28,32 +28,7 @@ function Awake()
 }
 
 function OnGUI() {
-	if (GUI.Button (Rect (20,40,80,20), "Rotate")) {
-		Reset();
-		_shapes[_nextShape].Rotate();
-		NextShapePreview.Get().ChangeShape(_shapes[_nextShape]);
-	}
-	if (GUI.Button (Rect (20,70,80,20), "New Shape ($250)")) {
-		// check if player can afford the cost. If so:
-		Reset();
-		NewNextShape();
-	}
 	
-	if(_tiles.length > 0) {
-		if (_validPos) {
-			if (GUI.Button (Rect (20,240,80,20), "Confirm")) {
-				// Enter the build mode:
-				ConfirmBuild();
-				Reset();
-				BuildManager.Get().ExitBuildMode();
-			}
-		}
-		if (GUI.Button (Rect (20,270,80,20), "Cancel")) {
-			// Enter the build mode:
-			Reset();
-			BuildManager.Get().ExitBuildMode();
-		}
-	}
 }
 function Start () {
 	_shapes = new Shape[SHAPE_COUNT];
@@ -67,7 +42,7 @@ function Start () {
 	NewNextShape();
 }
 
-function Build(selectedTile : Tile) {
+function Build(selectedTile : Tile) : boolean {
 	Reset();
 	var vectors = _shapes[_nextShape].GetVectorArray();
 	// Get the tiles relative to the selected tile
@@ -80,7 +55,6 @@ function Build(selectedTile : Tile) {
 		var vec2 : Vector2 = vectors[i];
 		positionToTest.x = selectedTile._x + vec2.x;
 		positionToTest.y = selectedTile._y + vec2.y;
-		Debug.Log("X:" + positionToTest.x + " Y:" + positionToTest.y);
 	
 		if (GameUtils.IsValidTile(positionToTest.x, positionToTest.y)) {
 			if(!LevelMaster().Get()._tiles[positionToTest.x,positionToTest.y]._isAvailable) {
@@ -119,25 +93,33 @@ function Build(selectedTile : Tile) {
 			}
 		}
 	}
+	return _validPos;
 }
 
-private function ConfirmBuild() {
+function ConfirmBuild(shopName : String) {
 	for (var tile : Tile in _tiles) {
 		tile._occupied = true;
 	}
-	var go : GameObject = Instantiate(Resources.Load("DansDiscountDoodadDen")) as GameObject;
+	var go : GameObject = Instantiate(Resources.Load(shopName)) as GameObject;
 	var shop : Shop = go.GetComponent("Shop") as Shop;
 	shop.Init(_tiles);
 	FloodFiller.Get().CreatePaths();
 	NewNextShape();
 }
 
-private function NewNextShape() {
+function NewNextShape() {
+	Reset();
 	_nextShape = Random.Range(0, SHAPE_COUNT);
 	NextShapePreview.Get().ChangeShape(_shapes[_nextShape]);
 }
 
-private function Reset() {
+function Rotate() {
+	Get().Reset();
+	_shapes[_nextShape].Rotate();
+	NextShapePreview.Get().ChangeShape(_shapes[_nextShape]);
+}
+
+function Reset() {
 	for(var tile : Tile in _tiles) {
 		if(tile != null) {
 			tile.Unhighlight();

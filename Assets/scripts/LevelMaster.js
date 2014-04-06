@@ -62,22 +62,6 @@ function Update() {
 		// fire midnight triggers.
 		WaveSpawner.Get().MidnightTrigger();
 	}
-	/*if (Input.GetMouseButtonDown(0)) {
-		var ray : Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-	    var hit : RaycastHit2D = Physics2D.GetRayIntersection(ray, 100, _mask);
-	    
-	    if (hit && hit.transform.tag == "Tile") {
-	    	var tile : Tile = hit.transform.GetComponent("Tile") as Tile;
-	    	if(tile._isAvailable) {
-	    		tile._occupied = true;
-	    		var cop : GameObject = Instantiate(Resources.Load("EnglishBobby")) as GameObject;
-	    		tile._occupiedUnit = cop.gameObject;
-				cop.transform.position.x = tile.transform.position.x;
-				cop.transform.position.y = tile.transform.position.y;
-				FloodFiller.Get().CreatePaths();
-	    	}
-	    }
-	}*/
 }
 
 private function CreateTiles() {

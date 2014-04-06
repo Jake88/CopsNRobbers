@@ -46,9 +46,6 @@ public function ChangeShape(shape : Shape) {
 	// grab the tiles around it (from vectors array)
 	// set their renderer.enabled to true
 	for (var vec : Vector2 in vectors) {
-		if(vec == vectors[0]) {
-			_tiles[(vec.x + x), (vec.y + y)].
-		}
 		_tiles[(vec.x + x), (vec.y + y)].renderer.enabled = true;
 	}
 	

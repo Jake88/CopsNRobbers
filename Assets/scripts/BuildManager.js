@@ -7,6 +7,8 @@ var _propButtons : BuildingButton[];
 var _currentBuilding : BuildingButton;
 var _currentState : BuildingState;
 var _transparentOverlay : Transform;
+private var _confirmingBuild : boolean;
+private var _selectedTile : Tile;
 
 
 private var _sliderPosition : int;
@@ -40,27 +42,62 @@ function OnGUI() {
 				_currentState = BuildingState.None;
 			}
 			
-			for (var i = 0; i < _shopButtons.Length; i++) {
-				if (!MoneyManager.Get().CheckMoney(_shopButtons[i].cost)){
-					Debug.Log(_shopButtons[i].shopName + " disabled");
+			for (var shopIndex = 0; shopIndex < _shopButtons.Length; shopIndex++) {
+				if (!MoneyManager.Get().CheckMoney(_shopButtons[shopIndex].cost)){
+					//Set this button to be disablaed
 					GUI.enabled = false;
 				}
-				if(GUI.Button(Rect(44+(i*44),Screen.height-44,44, 44), _shopButtons[i].texture)){
-					EnterBuildMode(_shopButtons[i]);
+				if(GUI.Button(Rect(44+(shopIndex*44),Screen.height-44,44, 44), _shopButtons[shopIndex].texture)){
+					EnterBuildMode(_shopButtons[shopIndex]);
 				}
 				GUI.enabled = true;
 			}
-			// display shop buttons on slider
-			// When one of these is clicked,
-				// set the corrersponding building name to _currentBuilding
-				// Change the game mode to building
-				// Hide the 'slider panel' and show the Confirm / Cancel / Rotate / New Shape buttons.
 		break;
 		case BuildingState.Cops :
-			// display cop buttons on slider
+			if(GUI.Button(Rect(0,Screen.height-44,44, 44), "<")){
+				_currentState = BuildingState.None;
+			}
+			
+			for (var copIndex = 0; copIndex < _copButtons.Length; copIndex++) {
+				if (!MoneyManager.Get().CheckMoney(_copButtons[copIndex].cost)){
+					//Set this button to be disablaed
+					GUI.enabled = false;
+				}
+				if(GUI.Button(Rect(44+(copIndex*44),Screen.height-44,44, 44), _copButtons[copIndex].texture)){
+					EnterBuildMode(_copButtons[copIndex]);
+				}
+				GUI.enabled = true;
+			}
 		break;
 		case BuildingState.Props :
 			// display props buttons on slider
+		break;
+		case BuildingState.Building :
+			if(_currentBuilding.tag == "Shop") {
+				if (GUI.Button (Rect(Screen.width/4,Screen.height-44,Screen.width/4, 44), "Rotate")) {
+					ShopBuilder.Get().Rotate();
+					_confirmingBuild = false;
+				}
+				if (GUI.Button (Rect(Screen.width/4*2,Screen.height-44,Screen.width/4, 44), "New Shape ($250)")) {
+					// check if player can afford the cost. If so:
+					ShopBuilder.Get().NewNextShape();
+					_confirmingBuild = false;
+				}
+			}
+			
+			if (GUI.Button (Rect(0,Screen.height-44,Screen.width/4, 44), "Cancel")) {
+				// Enter the build mode:
+				ExitBuildMode();
+			}
+
+			if (_confirmingBuild) {
+				if (GUI.Button (Rect(Screen.width/4*3,Screen.height-44,Screen.width/4, 44), "Confirm")) {
+					// Enter the build mode:
+					ConfirmBuild();
+					ExitBuildMode();
+				}
+			}
+				
 		break;
 		
 	}
@@ -78,7 +115,13 @@ private function EnterBuildMode(building : BuildingButton) {
 }
 
 function ExitBuildMode() {
+	ShopBuilder.Get().Reset();
+	if(_selectedTile) {
+		_selectedTile.Unhighlight();
+		_selectedTile = null;
+	}
 	_currentBuilding = null;
+	_confirmingBuild = false;
 	_currentState = BuildingState.None;
 	_transparentOverlay.renderer.enabled = false;
 	LevelMaster.Get().ChangeGameSpeed();
@@ -90,19 +133,44 @@ function ExitBuildMode() {
 
 function CheckBuildPosition(tile : Tile) {
 	if(_currentState == BuildingState.Building) {
+		Debug.Log(_currentBuilding.tag);
 		if(_currentBuilding.tag == "Shop") {
-			ShopBuilder.Get().Build(tile);
+			_confirmingBuild = ShopBuilder.Get().Build(tile);
 		} else if (_currentBuilding.tag == "Cop") {
-		
+	    	if(tile._isAvailable) {
+	    		tile.Highlight(true);
+	    		_confirmingBuild = true;
+	    	} else {
+	    		tile.Highlight(false);
+	    		_confirmingBuild = true;
+	    	}
+	    	if(_selectedTile) {
+	    		_selectedTile.Unhighlight();
+	    	}
+	    	_selectedTile = tile;
 		} else {
 		
 		}
 	}
 }
 
-function Update() {
-	// TODO: Change this to BuildingState.Building
-	if (_currentState == BuildingState.Building) {
+private function ConfirmBuild() {
+	if(_currentState == BuildingState.Building) {
+		if(_currentBuilding.tag == "Shop") {
+			Debug.Log(_currentBuilding.shopName);
+			ShopBuilder.Get().ConfirmBuild(_currentBuilding.shopName);
+		} else if (_currentBuilding.tag == "Cop") {
+			if(_selectedTile._isAvailable) {
+	    		_selectedTile._occupied = true;
+	    		var cop : GameObject = Instantiate(Resources.Load(_currentBuilding.shopName)) as GameObject;
+	    		_selectedTile._occupiedUnit = cop.gameObject;
+				cop.transform.position.x = _selectedTile.transform.position.x;
+				cop.transform.position.y = _selectedTile.transform.position.y;
+				FloodFiller.Get().CreatePaths();
+	    	}
+		} else {
+		
+		}
 	}
 }
 

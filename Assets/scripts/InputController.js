@@ -28,9 +28,7 @@ function Update () {
 	    	if(_prevTile == null || _prevTile != tile) { 
 				_prevTile = tile;
 	    		BuildManager.Get().CheckBuildPosition(tile);
-	    	} else {
-    			Debug.Log("checking");
-    		}
+	    	}
 	    }
 	}
 }

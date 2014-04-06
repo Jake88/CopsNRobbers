@@ -1,11 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\NextShapePreview.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\BuildManager.js">
     <Files>
-      <File FileName="Assets\scripts\Tile.js" Line="55" Column="4" />
-      <File FileName="Assets\scripts\ShopBuilder.js" Line="42" Column="25" />
-      <File FileName="Assets\scripts\NextShapePreview.js" Line="50" Column="37" />
-      <File FileName="Assets\scripts\InputController.js" Line="32" Column="15" />
+      <File FileName="Assets\scripts\NextShapePreview.js" Line="48" Column="38" />
+      <File FileName="Assets\scripts\Tile.js" Line="53" Column="11" />
+      <File FileName="Assets\scripts\ShopBuilder.js" Line="107" Column="17" />
+      <File FileName="Assets\scripts\NextShapePreview.js" Line="48" Column="38" />
+      <File FileName="Assets\scripts\InputController.js" Line="31" Column="8" />
       <File FileName="Assets\scripts\Shape.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\Wave.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\WaveLoader.js" Line="1" Column="1" />
@@ -13,15 +14,15 @@
       <File FileName="Assets\scripts\RobberMovement.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\Robber.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\Cop.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\Shop.js" Line="8" Column="17" />
+      <File FileName="Assets\scripts\Shop.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\GameUtils.js" Line="1" Column="1" />
       <File FileName="Assets\other\xml\Shapes.xml" Line="1" Column="1" />
       <File FileName="Assets\scripts\StartTile.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\FloodFiller.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\BuildManager.js" Line="83" Column="28" />
+      <File FileName="Assets\scripts\BuildManager.js" Line="140" Column="30" />
       <File FileName="Assets\scripts\BuildingButton.js" Line="5" Column="23" />
-      <File FileName="Assets\scripts\MoneyManager.js" Line="36" Column="20" />
-      <File FileName="Assets\scripts\LevelMaster.js" Line="106" Column="57" />
+      <File FileName="Assets\scripts\MoneyManager.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\LevelMaster.js" Line="64" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
