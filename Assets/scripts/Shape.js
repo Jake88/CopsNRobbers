@@ -9,9 +9,10 @@ public class Shape {
 	var _name : String;
 	
 	public function Shape(shapeName : String) {
-	_name = shapeName;
+		_name = shapeName;
 		var xmlDoc : XmlDocument = new XmlDocument();
-	  	xmlDoc.Load("Assets/other/xml/Shapes.xml");
+	  	var ta : TextAsset = Resources.Load("Shapes");
+		xmlDoc.LoadXml(ta.text);
 	  	var root : XmlNode = xmlDoc.DocumentElement;
 		root = root.SelectNodes("descendant::shape[@id='" + shapeName + "']")[0];
 		

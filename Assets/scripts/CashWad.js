@@ -6,7 +6,6 @@ private static var scaleMax : float = 0.8;
 
 
 function Init(val : int, pos : Vector3) {
-	Debug.Log("Initing");
 	transform.position = pos;
 	_value = val;
 }

@@ -48,11 +48,6 @@ function OnGUI() {
 }
 
 function Update() {
-	if (_isMidnightWarningActive) {
-		_isMidnightWarningActive = false;
-		ModalManager.Get().CreateTimeModal("MIDNIGHT APPROACHES", "A grand heist is being planned!", 4.0);
-		}
-
 	if(_midnightTimer < Time.time) {
 		// Reset midnight variables.
 		_isMidnightWarningActive = true;

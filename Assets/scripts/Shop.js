@@ -19,7 +19,6 @@ public class Shop extends Building {
 	function Init(tiles : Tile[]) {
 		//START THE TIMER FOR SHOP PAYDAY
 		_paydayTimer = Time.time + _paydayCooldown;
-		Debug.Log(_paydayTimer);
 		//SET THE POSITIONS OF CHILD SPRITES FOR SHOP
 		tiles = GameUtils.ShuffleArray(tiles);
 		var vecs : Vector3[] = new Vector3[tiles.length];
