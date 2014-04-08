@@ -16,14 +16,14 @@ class FloodFiller
     function CreatePaths() {
     	Reset();
     	// Create 'To Bank' path
-    	SetDistance(LevelMaster.Get()._endTile);
-    	_openList.Add(LevelMaster.Get()._endTile);
+    	SetDistance(LevelMaster.Get().GetEndTile());
+    	_openList.Add(LevelMaster.Get().GetEndTile());
     	FillRecursive(false);
     	
     	Reset();
     	// Create 'To Exit' path
-    	SetDistance(LevelMaster.Get()._startTile);
-    	_openList.Add(LevelMaster.Get()._startTile);
+    	SetDistance(LevelMaster.Get().GetStartTile());
+    	_openList.Add(LevelMaster.Get().GetStartTile());
     	FillRecursive(true);
     	
     	//Update the grid of available tiles.
@@ -102,7 +102,7 @@ class FloodFiller
     
     function IsPathPossible() : boolean{
     	Reset();
-    	_openList.Add(LevelMaster.Get()._startTile);
+    	_openList.Add(LevelMaster.Get().GetStartTile());
     	return CheckPathRecursive();
     }
     
@@ -130,7 +130,7 @@ class FloodFiller
 				_openList.Add(LevelMaster.Get()._tiles[tile._x, tile._y+1]);
 			}
 			
-			if(IsInOpenList(LevelMaster.Get()._endTile._x, LevelMaster.Get()._endTile._y)) {
+			if(IsInOpenList(LevelMaster.Get().GetEndTile()._x, LevelMaster.Get().GetEndTile()._y)) {
 				possible =  true;
 			} else {
 				possible = CheckPathRecursive();

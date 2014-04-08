@@ -10,8 +10,8 @@ var _returningSprite : Sprite;
 
 function Start () {
 	_robber = this.GetComponent("Robber") as Robber;
-	_curTile = LevelMaster.Get()._startTile._nextTileToBank;
-	_previousTile = LevelMaster.Get()._startTile.transform.position;
+	_curTile = LevelMaster.Get().GetStartTile()._nextTileToBank;
+	_previousTile = LevelMaster.Get().GetStartTile().transform.position;
    	transform.rotation = Quaternion.LookRotation(Vector3.forward, _curTile.transform.position - transform.position);
 }
 
@@ -21,12 +21,12 @@ function Update () {
 	transform.position = Vector3.Lerp(_previousTile, _curTile.transform.position, _distanceTraveled);
 	if (_distanceTraveled > 1) {
 		//Check if we should change to returning
-		if (_curTile == LevelMaster.Get()._endTile) {
+		if (_curTile == LevelMaster.Get().GetEndTile()) {
 			_robber._returning = true;
+			MoneyManager.Get().StealMoney(_robber._stealAmount);
 			var sr : SpriteRenderer = GetComponent("SpriteRenderer") as SpriteRenderer;
 			sr.sprite = _returningSprite;
-		} else if (_robber._returning && _curTile == LevelMaster.Get()._startTile) {
-			Debug.Log("Escape");
+		} else if (_robber._returning && _curTile == LevelMaster.Get().GetStartTile()) {
 			_robber.Escape();
 			return;
 		}

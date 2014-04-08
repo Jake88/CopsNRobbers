@@ -37,7 +37,7 @@ public class Cop extends Building {
 	function SetTarget() {
 		 _target = null;
 		
-		for ( var current : Robber in _targets) {
+		for (var current : Robber in _targets) {
 			if (!_target || _target._curHP > current._curHP) {
 				_target = current;
 			}

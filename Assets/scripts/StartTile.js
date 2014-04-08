@@ -12,7 +12,7 @@ public class StartTile extends Tile {
 	function Update () {
 
 	}
-	
+
 	function OnTriggerEnter2D (other : Collider2D) {
 		if(other.transform.tag == "Robber") {
 			if (_collisionCount < 1) {
@@ -24,7 +24,6 @@ public class StartTile extends Tile {
 	}
 
 	function OnTriggerExit2D (other : Collider2D) {
-		Debug.Log("Exiting");
 		if (other.transform.tag == "Robber") {
 			_collisionCount--;
 			if (_collisionCount < 1) { 

@@ -22,17 +22,25 @@ function Awake()
 }
 
 function OnGUI() {
-	GUI.Label(Rect (110,20,80,20), "$" + _money.ToString("n0"));
+	GUI.Label(Rect (20,20,80,20), "$" + _money.ToString("n0"));
 }
 
 function AlterMoney(amount : int) : boolean {
-	if (_money - amount > 0) {
+	if (_money - amount >= 0) {
 		_money -= amount;
 		return true;
 	}
 	return false;
 }
 
+function StealMoney(amount : int) {
+	_money -= amount;
+}
+
+function AddMoney(amount : int) {
+	_money += amount;
+}
+
 function CheckMoney(amount : int) : boolean {
-	return (_money - amount > 0);
+	return (_money - amount >= 0);
 }

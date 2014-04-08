@@ -18,20 +18,19 @@ public class GameUtils {
 	}
 	
 	public static function CenterPointBetweenManyVectors(vecs : Vector3[]) : Vector3{
-		var maxVec : Vector3 = vecs[0];
-		var minVec : Vector3 = vecs[0];
+		var x : float = 0;
+		var y : float = 0;
+		
 		// Find the min and max bounds of each vector
 		for (var vec : Vector3 in vecs) {
-			if (vec.x < minVec.x){vec.x = minVec.x;}
-			if (vec.y < minVec.y){vec.y = minVec.y;}
-			if (vec.z < minVec.z){vec.z = minVec.z;}
-			
-			if (vec.x < maxVec.x){vec.x = maxVec.x;}
-			if (vec.y < maxVec.y){vec.y = maxVec.y;}
-			if (vec.z < maxVec.z){vec.z = maxVec.z;}
+			x += vec.x;
+			y += vec.y;
 		}
 		
-		return maxVec - minVec;
+		x = x / vecs.Length;
+		y = y / vecs.Length;
+		
+		return new Vector3(x, y, 0);
 	}
 	
 	public static function ShuffleArray(arr : Array) {
@@ -39,7 +38,6 @@ public class GameUtils {
 		var randomArray = new Array();
 		
 		while (0 < arr.length) {
-			Debug.Log(arr.length);
 			var i = Random.Range(0, arr.length);
 			temp = arr[i];
 			arr.Remove(temp);

@@ -13,7 +13,7 @@ private var _curTile : Tile;
 function Start () {
 	_curHP = _maxHP;
 	_healthBar = transform.FindChild("hp-foreground").GetComponent("Health") as Health;
-	this.transform.position = LevelMaster.Get()._startTile.transform.position;
+	this.transform.position = LevelMaster.Get().GetStartTile().transform.position;
 }
 
 function Update () {
@@ -35,7 +35,14 @@ function TakeDamage(damage:float) : boolean {
 
 function Die() {
 	// Give player bounty money
+	MoneyManager.Get().AddMoney(_bountyValue);
 	// Drop stolen money if this robber was returning
+	if(_returning) {
+		var go : GameObject = Instantiate(Resources.Load("CashWad")) as GameObject;
+		var cash : CashWad = go.GetComponent("CashWad") as CashWad;
+		cash.Init(_stealAmount, (new Vector3(0, 0, -1) + this.transform.position));
+	}
+	// Kill this object
 	this.Destroy();
 }
 

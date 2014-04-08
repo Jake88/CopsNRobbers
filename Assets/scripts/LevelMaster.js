@@ -3,32 +3,23 @@
 private static var Instance : LevelMaster = null;
 var _mallWidth : int;
 var _mallHeight : int;
-var _startTile : Tile;
-var _endTile : Tile;
-var _mask : LayerMask;
 var _tiles : Tile[,];
 var _path = new Array();
 var _bankSprites : Sprite[];
 var _wallSprite : Sprite;
-var _gameTime : float;
 var _secondsBetweenMidnight : int;
-var _currentState : LevelStates;
+var _rent : int;
+
 private var _midnightTimer : float;
 private var _curTimescale : float;
+private var _startTile : Tile;
+private var _endTile : Tile;
+private var _currentState : LevelStates;
+private var _isMidnightWarningActive : boolean;
 
-public static function Get() : LevelMaster
+public static function Get() : LevelMaster { return Instance; }
 
-{
-    return Instance;
-}
-
-public function LevelMaster()
-{
-    //if the constructor must be public, you can do this:
-    if (Instance != null)
-    {
-    }
-}
+public function LevelMaster() {}
 
 function Awake()
 {
@@ -37,6 +28,7 @@ function Awake()
     _midnightTimer = Time.time + _secondsBetweenMidnight;
     _currentState = LevelStates.None; // Should be NONE. Change when we actually have a building mode.
     _curTimescale = 1.0;
+    _isMidnightWarningActive = true;
 
 	CreateTiles();
 	FloodFiller.Get().CreatePaths();
@@ -56,11 +48,23 @@ function OnGUI() {
 }
 
 function Update() {
-	_gameTime += Time.deltaTime;
+	if (_isMidnightWarningActive) {
+		_isMidnightWarningActive = false;
+		ModalManager.Get().CreateTimeModal("MIDNIGHT APPROACHES", "A grand heist is being planned!", 4.0);
+		}
+
 	if(_midnightTimer < Time.time) {
+		// Reset midnight variables.
+		_isMidnightWarningActive = true;
 		_midnightTimer = Time.time + _secondsBetweenMidnight;
+		// Display MIDNIGHT MODAL.
+		ModalManager.Get().CreateTimeModal("MIDNIGHT", "Rent Due: $"+ _rent, 3.0);
 		// fire midnight triggers.
 		WaveSpawner.Get().MidnightTrigger();
+		GetRent();
+	} else if (_isMidnightWarningActive && _midnightTimer-15.0 < Time.time) {
+		_isMidnightWarningActive = false;
+		ModalManager.Get().CreateTimeModal("MIDNIGHT APPROACHES", "A grand heist is being planned!", 4.0);
 	}
 }
 
@@ -119,6 +123,23 @@ public function ChangeGameSpeed() {
 		Time.timeScale = _curTimescale;
 	}
 }
+
+private function GetRent() {
+	if (!MoneyManager.Get().AlterMoney(_rent)) {
+		// The player can't afford rent. Game over.
+		//TODO Game over
+	}
+}
+
+// GETTERS AND SETTERS
+public function GetStartTile() : Tile {
+	return _startTile;
+}
+
+public function GetEndTile() : Tile {
+	return _endTile;
+}
+
 
 public enum LevelStates{
 	None

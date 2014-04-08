@@ -23,12 +23,17 @@ function Update () {
 		var ray : Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 	    var hit : RaycastHit2D = Physics2D.GetRayIntersection(ray, 100, _mask);
 	    
-	    if (hit && hit.transform.tag == "Tile") {
-	    	var tile : Tile = hit.transform.GetComponent("Tile") as Tile;
-	    	if(_prevTile == null || _prevTile != tile) { 
-				_prevTile = tile;
-	    		BuildManager.Get().CheckBuildPosition(tile);
-	    	}
+	    if (hit) {
+	    	if (hit.transform.tag == "Cash") {
+	    		var cash : CashWad = hit.transform.GetComponent("CashWad") as CashWad;
+	    		cash.Collect();
+	    	} else if (hit && hit.transform.tag == "Tile") {
+		    	var tile : Tile = hit.transform.GetComponent("Tile") as Tile;
+		    	if(_prevTile == null || _prevTile != tile) { 
+					_prevTile = tile;
+		    		BuildManager.Get().CheckBuildPosition(tile);
+		    	}
+		    }
 	    }
 	}
 }

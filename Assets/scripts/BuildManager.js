@@ -4,11 +4,12 @@ private static var Instance : BuildManager = null;
 var _shopButtons : BuildingButton[];
 var _copButtons : BuildingButton[];
 var _propButtons : BuildingButton[];
-var _currentBuilding : BuildingButton;
-var _currentState : BuildingState;
 var _transparentOverlay : Transform;
+
 private var _confirmingBuild : boolean;
 private var _selectedTile : Tile;
+private var _currentBuilding : BuildingButton;
+private var _currentState : BuildingState;
 
 
 private var _sliderPosition : int;
@@ -133,7 +134,6 @@ function ExitBuildMode() {
 
 function CheckBuildPosition(tile : Tile) {
 	if(_currentState == BuildingState.Building) {
-		Debug.Log(_currentBuilding.tag);
 		if(_currentBuilding.tag == "Shop") {
 			_confirmingBuild = ShopBuilder.Get().Build(tile);
 		} else if (_currentBuilding.tag == "Cop") {
@@ -155,23 +155,26 @@ function CheckBuildPosition(tile : Tile) {
 }
 
 private function ConfirmBuild() {
-	if(_currentState == BuildingState.Building) {
+	if(_currentState == BuildingState.Building && MoneyManager.Get().AlterMoney(_currentBuilding.cost)) {
 		if(_currentBuilding.tag == "Shop") {
-			Debug.Log(_currentBuilding.shopName);
 			ShopBuilder.Get().ConfirmBuild(_currentBuilding.shopName);
 		} else if (_currentBuilding.tag == "Cop") {
 			if(_selectedTile._isAvailable) {
-	    		_selectedTile._occupied = true;
-	    		var cop : GameObject = Instantiate(Resources.Load(_currentBuilding.shopName)) as GameObject;
-	    		_selectedTile._occupiedUnit = cop.gameObject;
-				cop.transform.position.x = _selectedTile.transform.position.x;
-				cop.transform.position.y = _selectedTile.transform.position.y;
-				FloodFiller.Get().CreatePaths();
+	    		BuildCop();
 	    	}
 		} else {
 		
 		}
 	}
+}
+
+private function BuildCop() {
+	_selectedTile._occupied = true;
+	var cop : GameObject = Instantiate(Resources.Load(_currentBuilding.shopName)) as GameObject;
+	_selectedTile._occupiedUnit = cop.gameObject;
+	cop.transform.position.x = _selectedTile.transform.position.x;
+	cop.transform.position.y = _selectedTile.transform.position.y;
+	FloodFiller.Get().CreatePaths();
 }
 
 
