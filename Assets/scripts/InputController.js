@@ -9,21 +9,16 @@ public static function Get() : InputController
     return Instance;
 }
 
-public function InputController()
-{
-}
+public function InputController(){}
 
-function Awake()
-{
-    Instance = this;
-}
+function Awake(){Instance = this;}
 
 function Update () {
 	if (Input.GetMouseButton(0)) {
 		var ray : Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 	    var hit : RaycastHit2D = Physics2D.GetRayIntersection(ray, 100, _mask);
 	    
-	    if (hit) {
+	    if (hit && GUIUtility.hotControl == 0) {
 	    	if (hit.transform.tag == "Cash") {
 	    		var cash : CashWad = hit.transform.GetComponent("CashWad") as CashWad;
 	    		cash.Collect();

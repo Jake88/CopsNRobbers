@@ -33,6 +33,22 @@ public class GameUtils {
 		return new Vector3(x, y, 0);
 	}
 	
+	public static function CenterPointBetweenManyVectors(vecs : Vector2[]) : Vector2{
+		var x : float = 0;
+		var y : float = 0;
+		
+		// Find the min and max bounds of each vector
+		for (var vec : Vector3 in vecs) {
+			x += vec.x;
+			y += vec.y;
+		}
+		
+		x = x / vecs.Length;
+		y = y / vecs.Length;
+		
+		return new Vector2(x, y);
+	}
+	
 	public static function ShuffleArray(arr : Array) {
 		var temp : Object;
 		var randomArray = new Array();

@@ -1,14 +1,16 @@
 ﻿#pragma strict
 
 private static var Instance : LevelMaster = null;
-var _mallWidth : int;
-var _mallHeight : int;
+var _mallWidth : float;
+var _mallHeight : float;
 var _tiles : Tile[,];
 var _path = new Array();
 var _bankSprites : Sprite[];
 var _wallSprite : Sprite;
 var _secondsBetweenMidnight : int;
 var _rent : int;
+var _skin : GUISkin;
+var _menuBackground : GUITexture;
 
 private var _midnightTimer : float;
 private var _curTimescale : float;
@@ -24,7 +26,6 @@ public function LevelMaster() {}
 function Awake()
 {
     Instance = this;
-    _mallHeight += 2;	// Allow for the addition of the bank and the mall entrance.
     _midnightTimer = Time.time + _secondsBetweenMidnight;
     _currentState = LevelStates.None; // Should be NONE. Change when we actually have a building mode.
     _curTimescale = 1.0;
@@ -32,6 +33,12 @@ function Awake()
 
 	CreateTiles();
 	FloodFiller.Get().CreatePaths();
+}
+
+function Start() {
+	_menuBackground.pixelInset.width = Screen.width;
+	_menuBackground.pixelInset.height = BuildManager.Get().GetButtonHeight()*2;
+	_menuBackground.pixelInset.y = -BuildManager.Get().GetButtonHeight();
 }
 
 function OnGUI() {

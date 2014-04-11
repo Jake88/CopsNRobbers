@@ -10,6 +10,7 @@ private var _confirmingBuild : boolean;
 private var _selectedTile : Tile;
 private var _currentBuilding : BuildingButton;
 private var _currentState : BuildingState;
+private var _buttonHeight : float = 44;
 
 
 private var _sliderPosition : int;
@@ -25,21 +26,21 @@ function Awake()
 }
 
 function OnGUI() {
-	GUI.Box(Rect(0,Screen.height-44, Screen.width, 44), "");
+	GUI.Box(Rect(0,Screen.height-_buttonHeight, Screen.width, _buttonHeight), "");
 	switch(_currentState) {
 		case BuildingState.None :
-			if(GUI.Button(Rect(0,Screen.height-44,Screen.width/3, 44), "Shops")){
+			if(GUI.Button(Rect(0,Screen.height-_buttonHeight,Screen.width/3, _buttonHeight), "Shops")){
 				_currentState = BuildingState.Shops;
 			}
-			if(GUI.Button(Rect(Screen.width/3,Screen.height-44,Screen.width/3, 44), "Cops")){
+			if(GUI.Button(Rect(Screen.width/3,Screen.height-_buttonHeight,Screen.width/3, _buttonHeight), "Cops")){
 				_currentState = BuildingState.Cops;
 			}
-			if(GUI.Button(Rect(Screen.width/3*2,Screen.height-44,Screen.width/3, 44), "Props")){
+			if(GUI.Button(Rect(Screen.width/3*2,Screen.height-_buttonHeight,Screen.width/3, _buttonHeight), "Props")){
 				_currentState = BuildingState.Props;
 			}
 		break;
 		case BuildingState.Shops :
-			if(GUI.Button(Rect(0,Screen.height-44,44, 44), "<")){
+			if(GUI.Button(Rect(0,Screen.height-_buttonHeight,_buttonHeight, _buttonHeight), "<")){
 				_currentState = BuildingState.None;
 			}
 			
@@ -48,14 +49,14 @@ function OnGUI() {
 					//Set this button to be disablaed
 					GUI.enabled = false;
 				}
-				if(GUI.Button(Rect(44+(shopIndex*44),Screen.height-44,44, 44), _shopButtons[shopIndex].texture)){
+				if(GUI.Button(Rect(_buttonHeight+(shopIndex*_buttonHeight),Screen.height-_buttonHeight,_buttonHeight, _buttonHeight), _shopButtons[shopIndex].texture)){
 					EnterBuildMode(_shopButtons[shopIndex]);
 				}
 				GUI.enabled = true;
 			}
 		break;
 		case BuildingState.Cops :
-			if(GUI.Button(Rect(0,Screen.height-44,44, 44), "<")){
+			if(GUI.Button(Rect(0,Screen.height-_buttonHeight,_buttonHeight, _buttonHeight), "<")){
 				_currentState = BuildingState.None;
 			}
 			
@@ -64,7 +65,7 @@ function OnGUI() {
 					//Set this button to be disablaed
 					GUI.enabled = false;
 				}
-				if(GUI.Button(Rect(44+(copIndex*44),Screen.height-44,44, 44), _copButtons[copIndex].texture)){
+				if(GUI.Button(Rect(_buttonHeight+(copIndex*_buttonHeight),Screen.height-_buttonHeight,_buttonHeight, _buttonHeight), _copButtons[copIndex].texture)){
 					EnterBuildMode(_copButtons[copIndex]);
 				}
 				GUI.enabled = true;
@@ -75,32 +76,30 @@ function OnGUI() {
 		break;
 		case BuildingState.Building :
 			if(_currentBuilding.tag == "Shop") {
-				if (GUI.Button (Rect(Screen.width/4,Screen.height-44,Screen.width/4, 44), "Rotate")) {
+				if (GUI.Button (Rect(Screen.width/4,Screen.height-_buttonHeight,Screen.width/4, _buttonHeight), "Rotate")) {
 					ShopBuilder.Get().Rotate();
 					_confirmingBuild = false;
 				}
-				if (GUI.Button (Rect(Screen.width/4*2,Screen.height-44,Screen.width/4, 44), "New Shape ($250)")) {
+				if (GUI.Button (Rect(Screen.width/4*2,Screen.height-_buttonHeight,Screen.width/4, _buttonHeight), "New Shape ($250)")) {
 					// check if player can afford the cost. If so:
 					ShopBuilder.Get().NewNextShape();
 					_confirmingBuild = false;
 				}
 			}
 			
-			if (GUI.Button (Rect(0,Screen.height-44,Screen.width/4, 44), "Cancel")) {
+			if (GUI.Button (Rect(0,Screen.height-_buttonHeight,Screen.width/4, _buttonHeight), "Cancel")) {
 				// Enter the build mode:
 				ExitBuildMode();
 			}
 
 			if (_confirmingBuild) {
-				if (GUI.Button (Rect(Screen.width/4*3,Screen.height-44,Screen.width/4, 44), "Confirm")) {
+				if (GUI.Button (Rect(Screen.width/4*3,Screen.height-_buttonHeight,Screen.width/4, _buttonHeight), "Confirm")) {
 					// Enter the build mode:
 					ConfirmBuild();
 					ExitBuildMode();
 				}
-			}
-				
+			}	
 		break;
-		
 	}
 }
 
@@ -175,6 +174,10 @@ private function BuildCop() {
 	cop.transform.position.x = _selectedTile.transform.position.x;
 	cop.transform.position.y = _selectedTile.transform.position.y;
 	FloodFiller.Get().CreatePaths();
+}
+
+public function GetButtonHeight() : float {
+	return _buttonHeight;
 }
 
 
