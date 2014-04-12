@@ -7,19 +7,8 @@ private static var _shapes : Shape[];
 private static var _tiles : Tile[];
 private static var _validPos : boolean;
 
-public static function Get() : ShopBuilder
-
-{
-    return Instance;
-}
-
-public function ShopBuilder()
-{
-    //if the constructor must be public, you can do this:
-    if (Instance != null)
-    {
-    }
-}
+public static function Get() : ShopBuilder{return Instance;}
+public function ShopBuilder(){}
 
 function Awake()
 {
@@ -27,9 +16,6 @@ function Awake()
     _tiles = new Tile[0];
 }
 
-function OnGUI() {
-	
-}
 function Start () {
 	_shapes = new Shape[SHAPE_COUNT];
 	_shapes[0] = new Shape("Zed");

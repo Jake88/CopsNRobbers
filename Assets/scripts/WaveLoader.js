@@ -65,6 +65,3 @@ private function LoadLevelWaves() {
   		waveIndex++;
   	}
 }
-
-function Update () {
-} 

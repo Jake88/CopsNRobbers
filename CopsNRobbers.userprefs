@@ -1,32 +1,31 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\RobberMovement.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\Shape.js">
     <Files>
-      <File FileName="Assets\scripts\BuildManager.js" Line="179" Column="32" />
-      <File FileName="Assets\scripts\NextShapePreview.js" Line="20" Column="3" />
+      <File FileName="Assets\scripts\BuildManager.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\NextShapePreview.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\Tile.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\ShopBuilder.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\ShopBuilder.js" Line="107" Column="1" />
       <File FileName="Assets\scripts\InputController.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\Shape.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\Wave.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\WaveLoader.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\WaveSpawner.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\RobberMovement.js" Line="24" Column="1" />
-      <File FileName="Assets\scripts\Robber.js" Line="10" Column="23" />
-      <File FileName="Assets\scripts\Cop.js" Line="57" Column="11" />
-      <File FileName="Assets\scripts\Shop.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Robber.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Cop.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Shop.js" Line="20" Column="4" />
       <File FileName="Assets\scripts\GameUtils.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\StartTile.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\FloodFiller.js" Line="12" Column="6" />
-      <File FileName="Assets\scripts\BuildingButton.js" Line="5" Column="15" />
-      <File FileName="Assets\scripts\LevelMaster.js" Line="41" Column="1" />
+      <File FileName="Assets\scripts\FloodFiller.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\BuildingButton.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\LevelMaster.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\Building.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\CashWad.js" Line="19" Column="3" />
-      <File FileName="Assets\scripts\MoneyManager.js" Line="6" Column="64" />
-      <File FileName="Assets\scripts\ModalManager.js" Line="54" Column="18" />
-      <File FileName="Assets\scripts\CameraMovement.js" Line="145" Column="1" />
-      <File FileName="Assets\scripts\GUITextureOffset.js" Line="3" Column="1" />
-      <File FileName="Assets\scripts\Health.js" Line="26" Column="34" />
+      <File FileName="Assets\scripts\CashWad.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\MoneyManager.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\ModalManager.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\CameraMovement.js" Line="93" Column="62" />
+      <File FileName="Assets\scripts\Health.js" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

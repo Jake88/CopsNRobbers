@@ -23,9 +23,6 @@ function Awake () {
 	}
 }
 
-function Update () {
-}
-
 function SetAvailability(available : boolean) {
 	if (available) {
 		_isAvailable = true;

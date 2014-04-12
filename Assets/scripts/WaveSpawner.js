@@ -4,49 +4,25 @@ private static var Instance : WaveSpawner = null;
 var _curDifficulty : int;
 var _timeBetweenSpawns : int;
 var _firstSpawnDelay : float;
-private var _spawnTimer : float;
 private var _spawnList = new Array();
-private var _spawnDelay : float = 0;
 
 
-
-
-public static function Get() : WaveSpawner
-
-{
-    return Instance;
-}
-
-public function WaveSpawner()
-{
-    //if the constructor must be public, you can do this:
-    if (Instance != null)
-    {
-    }
-}
+public static function Get() : WaveSpawner{return Instance;}
+public function WaveSpawner(){}
 
 function Awake() {
 	Instance = this;
 }
 
 function Start () {
-	_spawnTimer = Time.time + _firstSpawnDelay;
+	InvokeRepeating("AddGeneric", _firstSpawnDelay, _timeBetweenSpawns);
+	InvokeRepeating("SpawnFromList", _firstSpawnDelay, 0.3f);
 }
 
-function Update () {
-	if (_spawnTimer < Time.time) {
-		_spawnTimer = Time.time + _timeBetweenSpawns + Random.Range(-_timeBetweenSpawns*0.2, _timeBetweenSpawns*0.2);
-		// add a robber to the spawn list based on the generic wave list
-		var wave = WaveLoader._genericWaves[_curDifficulty];
-		for(var name : String in wave.robberNames) {
-			_spawnList.Add(name);
-		}
-	}
-	
-	if (_spawnList.length > 0 && Time.time > _spawnDelay) {
-		_spawnDelay = Time.time + 0.3f;
-		Instantiate(Resources.Load(_spawnList[_spawnList.length-1] as String));
-		_spawnList.pop();
+private function AddGeneric() {
+	var wave = WaveLoader._genericWaves[_curDifficulty];
+	for(var name : String in wave.robberNames) {
+		_spawnList.Add(name);
 	}
 }
 
@@ -55,5 +31,12 @@ public function MidnightTrigger() {
 	
 	for(var name : String in wave.robberNames) {
 		_spawnList.Add(name);
+	}
+}
+
+private function SpawnFromList() {
+	if (_spawnList.length > 0) {
+		Instantiate(Resources.Load(_spawnList[_spawnList.length-1] as String));
+		_spawnList.pop();
 	}
 }
