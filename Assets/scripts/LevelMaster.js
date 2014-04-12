@@ -4,7 +4,6 @@ private static var Instance : LevelMaster = null;
 var _mallWidth : float;
 var _mallHeight : float;
 var _tiles : Tile[,];
-var _path = new Array();
 var _bankSprites : Sprite[];
 var _wallSprite : Sprite;
 var _secondsBetweenMidnight : int;
@@ -12,12 +11,10 @@ var _rent : int;
 var _skin : GUISkin;
 var _menuBackground : GUITexture;
 
-private var _midnightTimer : float;
 private var _curTimescale : float;
 private var _startTile : Tile;
 private var _endTile : Tile;
 private var _currentState : LevelStates;
-private var _isMidnightWarningActive : boolean;
 
 public static function Get() : LevelMaster { return Instance; }
 
@@ -26,10 +23,8 @@ public function LevelMaster() {}
 function Awake()
 {
     Instance = this;
-    _midnightTimer = Time.time + _secondsBetweenMidnight;
     _currentState = LevelStates.None; // Should be NONE. Change when we actually have a building mode.
     _curTimescale = 1.0;
-    _isMidnightWarningActive = true;
 
 	CreateTiles();
 	FloodFiller.Get().CreatePaths();
@@ -39,6 +34,9 @@ function Start() {
 	_menuBackground.pixelInset.width = Screen.width;
 	_menuBackground.pixelInset.height = BuildManager.Get().GetButtonHeight()*2;
 	_menuBackground.pixelInset.y = -BuildManager.Get().GetButtonHeight();
+	
+	InvokeRepeating("Midnight", _secondsBetweenMidnight, _secondsBetweenMidnight);
+	InvokeRepeating("MidnightWarning", _secondsBetweenMidnight-15.0, _secondsBetweenMidnight-15.0);
 }
 
 function OnGUI() {
@@ -54,20 +52,16 @@ function OnGUI() {
 	}
 }
 
-function Update() {
-	if(_midnightTimer < Time.time) {
-		// Reset midnight variables.
-		_isMidnightWarningActive = true;
-		_midnightTimer = Time.time + _secondsBetweenMidnight;
-		// Display MIDNIGHT MODAL.
-		ModalManager.Get().CreateTimeModal("MIDNIGHT", "Rent Due: $"+ _rent, 3.0);
-		// fire midnight triggers.
-		WaveSpawner.Get().MidnightTrigger();
-		GetRent();
-	} else if (_isMidnightWarningActive && _midnightTimer-15.0 < Time.time) {
-		_isMidnightWarningActive = false;
-		ModalManager.Get().CreateTimeModal("MIDNIGHT APPROACHES", "A grand heist is being planned!", 4.0);
-	}
+private function Midnight() {
+	// Display MIDNIGHT MODAL.
+	ModalManager.Get().CreateTimeModal("MIDNIGHT", "Rent Due: $"+ _rent, 3.0);
+	// fire midnight triggers.
+	WaveSpawner.Get().MidnightTrigger();
+	GetRent();
+}
+
+private function MidnightWarning() {
+	ModalManager.Get().CreateTimeModal("MIDNIGHT APPROACHES", "A grand heist is being planned!", 4.0);
 }
 
 private function CreateTiles() {

@@ -8,12 +8,14 @@ private static var scaleMax : float = 0.8;
 function Init(val : int, pos : Vector3) {
 	transform.position = pos;
 	_value = val;
+	Grow();
 }
 
-function Update () {
-	if(transform.localScale.x < scaleMax) {
+function Grow() {
+	while(transform.localScale.x < scaleMax) {
 		this.transform.localScale.x += (scaleSpeed * Time.deltaTime);
 		this.transform.localScale.y += (scaleSpeed * Time.deltaTime);
+		yield;
 	}
 }
 

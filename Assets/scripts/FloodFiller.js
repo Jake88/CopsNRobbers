@@ -1,7 +1,5 @@
 ﻿#pragma strict
-class FloodFiller
-
-{
+class FloodFiller {
     private static var Instance : FloodFiller=new FloodFiller();
    	var _openList = new Array();
    	var _closedList = new Array();

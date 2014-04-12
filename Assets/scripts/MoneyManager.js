@@ -3,18 +3,8 @@
 private static var Instance : MoneyManager = null;
 var _money : int;
 
-public static function Get() : MoneyManager
-{
-    return Instance;
-}
-
-public function MoneyManager()
-{
-    //if the constructor must be public, you can do this:
-    if (Instance != null)
-    {
-    }
-}
+public static function Get() : MoneyManager{ return Instance; }
+public function MoneyManager(){}
 
 function Awake()
 {

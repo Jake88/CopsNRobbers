@@ -90,8 +90,8 @@ function OnGUI() {
 private function ValidateX(x : float) : boolean {
 	var isValidMovement = true;
 	x += transform.position.x;
-	var maxCameraX = LevelMaster.Get()._mallWidth - (Camera.mainCamera.orthographicSize * Camera.main.aspect) -0.5;
-	var minCameraX = 0 + (Camera.mainCamera.orthographicSize * Camera.main.aspect) -0.5;
+	var maxCameraX = LevelMaster.Get()._mallWidth - (Camera.main.orthographicSize * Camera.main.aspect) -0.5;
+	var minCameraX = 0 + (Camera.main.orthographicSize * Camera.main.aspect) -0.5;
 	
 	if (x > maxCameraX) {
 		isValidMovement = false;
@@ -113,8 +113,8 @@ private function ValidateY(y : float) : boolean {
 	var	guiBottomWorldPoint : Vector3 = Camera.main.ScreenToWorldPoint(Vector3.zero);
 	var guiHeightInWorld : float = (guiTopWorldPoint - guiBottomWorldPoint).magnitude;
 	
-	var maxCameraY = (LevelMaster.Get()._mallHeight+guiHeightInWorld) - Camera.mainCamera.orthographicSize -0.5;
-	var minCameraY = (0-guiHeightInWorld) + Camera.mainCamera.orthographicSize -0.5;
+	var maxCameraY = (LevelMaster.Get()._mallHeight+guiHeightInWorld) - Camera.main.orthographicSize -0.5;
+	var minCameraY = (0-guiHeightInWorld) + Camera.main.orthographicSize -0.5;
 	
 	if (y > maxCameraY){
 		isValidMovement = false;
@@ -129,16 +129,16 @@ private function ValidateY(y : float) : boolean {
 
 private function Zoom(val : float) {
 	if(val > 0) {
-		Camera.mainCamera.orthographicSize += Time.deltaTime*2;
-		if (Camera.mainCamera.orthographicSize > _maxOrthographicSize) {
-			Camera.mainCamera.orthographicSize = _maxOrthographicSize;
+		Camera.main.orthographicSize += Time.deltaTime*2;
+		if (Camera.main.orthographicSize > _maxOrthographicSize) {
+			Camera.main.orthographicSize = _maxOrthographicSize;
 		}
 		ValidateX(0);
 		ValidateY(0);
 	} else if (val < 0) {
-		Camera.mainCamera.orthographicSize -= Time.deltaTime*2;
-		if (Camera.mainCamera.orthographicSize < _minOrthographicSize) {
-			Camera.mainCamera.orthographicSize = _minOrthographicSize;
+		Camera.main.orthographicSize -= Time.deltaTime*2;
+		if (Camera.main.orthographicSize < _minOrthographicSize) {
+			Camera.main.orthographicSize = _minOrthographicSize;
 		}
 	}
 }
