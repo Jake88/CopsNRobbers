@@ -30,10 +30,19 @@ public function ChangeShape(shape : Shape) {
 	
 	//Position the boxes
 	var boxSize : float = 6.0;
+	var xOffset : float = -26;
+	var yOffset : float = TopBarHandler.Get()._backgroundOffset + TopBarHandler.Get().GetHeight() - 26;
 	for(var k = 0; k < vectors2D.length; k++) {
-		var x : float = boxSize*vectors2D[k].x -26;
-		var y : float = boxSize*vectors2D[k].y -26;
+		var x : float = boxSize*vectors2D[k].x + xOffset;
+		var y : float = boxSize*vectors2D[k].y + yOffset;
 		_previewBlocks[k].pixelInset.x = x;
 		_previewBlocks[k].pixelInset.y = y;
+	}
+}
+
+public function Move(x : float, y : float) {
+	for(var i = 0; i < _previewBlocks.length; i++) {
+		_previewBlocks[i].pixelInset.x += x;
+		_previewBlocks[i].pixelInset.y += y;
 	}
 }

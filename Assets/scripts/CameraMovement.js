@@ -108,13 +108,20 @@ private function ValidateY(y : float) : boolean {
 	var isValidMovement = true;
 	y += transform.position.y;
 	
-	// Work out the size of the gui buttons in world space.
-	var guiTopWorldPoint : Vector3 = Camera.main.ScreenToWorldPoint(Vector3(0, BuildManager.Get().GetButtonHeight(), 0));
+	// Height of the top GUI bar.
+	var guiTopWorldPoint : Vector3 = Camera.main.ScreenToWorldPoint(Vector3(0, TopBarHandler.Get().GetHeight(), 0));
 	var	guiBottomWorldPoint : Vector3 = Camera.main.ScreenToWorldPoint(Vector3.zero);
 	var guiHeightInWorld : float = (guiTopWorldPoint - guiBottomWorldPoint).magnitude;
 	
 	var maxCameraY = (LevelMaster.Get()._mallHeight+guiHeightInWorld) - Camera.main.orthographicSize -0.5;
+	
+	//Height of the bottom GUI buttons
+	guiTopWorldPoint = Camera.main.ScreenToWorldPoint(Vector3(0, BuildManager.Get().GetButtonHeight(), 0));
+	guiBottomWorldPoint = Camera.main.ScreenToWorldPoint(Vector3.zero);
+	guiHeightInWorld = (guiTopWorldPoint - guiBottomWorldPoint).magnitude;
+	
 	var minCameraY = (0-guiHeightInWorld) + Camera.main.orthographicSize -0.5;
+
 	
 	if (y > maxCameraY){
 		isValidMovement = false;
@@ -151,7 +158,8 @@ private function IncreaseVelocity() {
 }
 
 private function DecreaseVelocity() {
-	_velocity -= Time.deltaTime;
+	var amt : float = Time.deltaTime != 0 ? Time.deltaTime : 0.05;
+	_velocity -= amt;
 	if (_velocity < 0) {
 		_velocity = 0;
 	}

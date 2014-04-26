@@ -1,5 +1,10 @@
 ﻿#pragma strict
 
-var shopName : String;
-var cost : int;
-var texture : Texture;
+public class BuildingButton extends Button {
+	var shopName : String;
+	var cost : int;
+	
+	function Start() {
+		this.label.text = cost.ToString("n0");
+	}
+}

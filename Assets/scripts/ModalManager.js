@@ -1,13 +1,10 @@
 ﻿#pragma strict
 
-private var _active : boolean;
-private var _height : float;
-private var _width : float;
 private var _modalType : ModalType;
-private var _scale : float;
 
-private var _heading : String;
-private var _body : String;
+var modalBG : GUITexture;
+var _heading : GUIText;
+var _body : GUIText;
 
 
 // Make this a singleton
@@ -18,82 +15,71 @@ public function ModalManager() {}
 function Awake()
 {
 	Instance = this;
-	_width = Screen.width - 80;
+	
+	modalBG.pixelInset.width = Screen.width - 80;
+	modalBG.pixelInset.x = 40;
+	
+	modalBG.enabled = false;
+	_heading.enabled = false;
+	_body.enabled = false;
+	
+	modalBG.color.a = 0;
+	_heading.color.a = 0;
+	_body.color.a = 0;
 }
 
 function CreateTimeModal(headerText : String, bodyText : String, time : float) {
-	_active = true;
 	_modalType = ModalType.Timer;
-	_heading = headerText;
-	_body = bodyText;
+	_heading.text = headerText;
+	_body.text = bodyText;
+	
+	modalBG.pixelInset.height = 200;
+	modalBG.pixelInset.y = -100;
 	
 	StartModal();
-	Invoke("CloseModal", time);
-	
-	_height = 300; // Work out what the height should be depdning on if Header exists, and body.length
+	CloseDelay(time);
 }
 
 function CreateButtonModal(headerText : String, bodyText : String) {
-	_active = true;
 	_modalType = ModalType.Button;
+	_heading.text = headerText;
+	_body.text = bodyText;
 	
-	_height = 400;
+	modalBG.pixelInset.height = 250;
+	modalBG.pixelInset.y = -125;
+	
+	StartModal();
+}
+
+private function CloseDelay(time : float) {
+	yield WaitForSeconds(time);
+	CloseModal();
 }
 
 private function StartModal() {
-	while (_scale < 1) {
-		_scale += Time.deltaTime*1.5;
-		if(_scale > 1) {
-			_scale = 1;
-		}
+	modalBG.enabled = true;
+	_heading.enabled = true;
+	_body.enabled = true;
+	while (modalBG.color.a < 1) {
+		modalBG.color.a += Time.deltaTime;
+		_heading.color.a += Time.deltaTime;
+		_body.color.a += Time.deltaTime;
 		yield;
 	}
 }
 
 function CloseModal() {
-	_active = false;
 	_modalType = ModalType.None;
 	
-	while (_scale > 0) {
-		_scale -= Time.deltaTime*1.5;
-		if(_scale < 0) {
-			_scale = 0;
-		}
+	while (modalBG.color.a > 0) {
+		modalBG.color.a -= Time.deltaTime;
+		_heading.color.a -= Time.deltaTime;
+		_body.color.a -= Time.deltaTime;
 		yield;
 	}
-}
-
-function OnGUI() {
-	if(_active || _scale > 0) {
-		// Set RECT variables.
-		
-		
-		
-		
-		GUI.Box(ScalingRect( 40, (Screen.height - _height)/2, _width, _height),"");
-		
-		// Heading Text
-		GUI.Label(ScalingRect(60, ((Screen.height - _height)/2 +20), _width-40, 100), _heading);
-		
-		// Body Text
-		GUI.Label(ScalingRect(60, ((Screen.height - _height)/2 +60), _width-40, 100), _body);
-		
-	}
-}
-
-function ScalingRect(x : float, y : float, width : float, height : float) : Rect {
-	var posX : float = x;
-	var posY : float = y;
-	var thisWidth : float = width;
-	var thisHeight : float = height;
-	
-	if (_scale < 1) {
-		posX = (Screen.width/2) - ((Screen.width/2) * _scale) + (x * _scale);
-		posY = (Screen.height/2) - ((Screen.height/2) * _scale) + (y * _scale);
-		thisWidth = _width * _scale;
-		thisHeight = _height * _scale;
-	}
-	return Rect(posX, posY, thisWidth, thisHeight);
+	modalBG.enabled = false;
+	_heading.enabled = false;
+	_body.enabled = false;
 }
 
 private enum ModalType {

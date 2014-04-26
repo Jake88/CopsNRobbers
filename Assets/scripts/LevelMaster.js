@@ -1,6 +1,7 @@
 ﻿#pragma strict
 
 private static var Instance : LevelMaster = null;
+private static var DEFAULT_DPI : float = 160;
 var _mallWidth : float;
 var _mallHeight : float;
 var _tiles : Tile[,];
@@ -8,13 +9,13 @@ var _bankSprites : Sprite[];
 var _wallSprite : Sprite;
 var _secondsBetweenMidnight : int;
 var _rent : int;
-var _skin : GUISkin;
-var _menuBackground : GUITexture;
-
-private var _curTimescale : float;
+var _curTimescale : float;
+var _gameClockLabel : GUIText;
+private var _gameClock : int;
 private var _startTile : Tile;
 private var _endTile : Tile;
 private var _currentState : LevelStates;
+private var dpiDifference : float;
 
 public static function Get() : LevelMaster { return Instance; }
 
@@ -23,36 +24,55 @@ public function LevelMaster() {}
 function Awake()
 {
     Instance = this;
-    _currentState = LevelStates.None; // Should be NONE. Change when we actually have a building mode.
+    _currentState = LevelStates.None;
     _curTimescale = 1.0;
+    
+    if ( Screen.dpi == 0 ) {
+    	dpiDifference = 1;
+    } else {
+     dpiDifference = Screen.dpi / DEFAULT_DPI;
+    }
 
 	CreateTiles();
 	FloodFiller.Get().CreatePaths();
 }
 
 function Start() {
-	_menuBackground.pixelInset.width = Screen.width;
-	_menuBackground.pixelInset.height = BuildManager.Get().GetButtonHeight()*2;
-	_menuBackground.pixelInset.y = -BuildManager.Get().GetButtonHeight();
-	
+	// Start repeating functions for the game.
 	InvokeRepeating("Midnight", _secondsBetweenMidnight, _secondsBetweenMidnight);
 	InvokeRepeating("MidnightWarning", _secondsBetweenMidnight-15.0, _secondsBetweenMidnight-15.0);
+	
+	// Work out game clock.
+    var minutesPerDay : float = 1440;
+    var aGameMinute : float = (0.0 + _secondsBetweenMidnight) / 1440;
+    InvokeRepeating("IncreaseGameClock", aGameMinute, aGameMinute);
 }
 
-function OnGUI() {
-	if (GUI.Button (Rect (20,140,80,20), "Normal")) {
-		// Change the game speed
-		_curTimescale = 1.0;
-		ChangeGameSpeed();
+private function IncreaseGameClock() {
+	_gameClock++;
+	var isPM : boolean = _gameClock > 720;
+	var hours : int = (_gameClock / 60);
+	var minutes : int = _gameClock % 60;
+	var MeridianString : String = " AM";
+	
+	if (isPM) {
+		hours -= 12;
+		MeridianString = " PM";
 	}
-	if (GUI.Button (Rect (20,200,80,20), "Fastest")) {
-		// Change the game speed
-		_curTimescale = 2.0;
-		ChangeGameSpeed();
+	
+	if(hours == 0) {
+		hours = 12;
 	}
+	
+	_gameClockLabel.text = hours.ToString("00") + ":" + minutes.ToString("00") + MeridianString;
+}
+
+function MoveTime(val : float) {
+	_gameClockLabel.pixelOffset.y += val;
 }
 
 private function Midnight() {
+	_gameClock = 0;
 	// Display MIDNIGHT MODAL.
 	ModalManager.Get().CreateTimeModal("MIDNIGHT", "Rent Due: $"+ _rent, 3.0);
 	// fire midnight triggers.
@@ -108,7 +128,6 @@ private function CreateTiles() {
 					castedTile._occupied = true;
 				}
 			}
-			
 			_tiles[x, y] = castedTile;
 		}
 	}
@@ -122,9 +141,20 @@ public function ChangeGameSpeed() {
 
 private function GetRent() {
 	if (!MoneyManager.Get().AlterMoney(_rent)) {
+		Debug.Log("Stopping Game");
 		// The player can't afford rent. Game over.
 		//TODO Game over
+		StopGame();
+		
 	}
+}
+
+private function StopGame() {
+	CancelInvoke("Midnight");
+	CancelInvoke("MidnightWarning");
+    CancelInvoke("IncreaseGameClock");
+    
+    ModalManager.Get().CreateButtonModal("Bankrupt!", "You managed the mall for " + Time.timeSinceLevelLoad);
 }
 
 // GETTERS AND SETTERS
@@ -136,7 +166,13 @@ public function GetEndTile() : Tile {
 	return _endTile;
 }
 
+public function DpiDifference() {
+	return dpiDifference;
+}
+
 
 public enum LevelStates{
-	None
+	None,
+	Lost
+	
 }
