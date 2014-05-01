@@ -20,7 +20,7 @@ public class Shop extends Building {
 		}
 		
 		_center = GameUtils.CenterPointBetweenManyVectors(vecs);
-		_center.z = -0.2;
+		_center.z = -2;
 	}
 	
 	function Payday() {

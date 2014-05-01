@@ -39,26 +39,31 @@ function Update () {
 	if (touchedOff) {
 		if (prevButton) {
 			PressButton();
+			prevButton.transform.localScale = Vector3.zero;
+			prevButton = null;
 		} else if (hit.transform.tag == "Cash") {
     		var cash : CashWad = hit.transform.GetComponent("CashWad") as CashWad;
     		cash.Collect();
     	}
-		prevButton = null;
+		
 	} else if (touchDown) {
+		// Get the GUI Element we're touching (if we're touching one).
 		var curButton : GUIElement = guiLayer.HitTest(touchPos);
+		
+		// Check that out selected GUI element exists and that it's not untagged (aka is not just a static texture)
 		if (curButton != null && curButton.tag != "Untagged") {
+			// If we don't already have a previous button selected OR the previous button is different to
+			// our current button...
 			if (!prevButton || curButton != prevButton) {
-				if (prevButton) {
-					prevButton.transform.localScale = Vector3.zero;
-				}
-				curButton.transform.localScale += Vector3(0.02,0.02,0.02);
+				// if we had a previous button, reset it's scale.
+				ResetPrevButton();
+				// set the new button's scale slightly higher to indicated a pressed state.
+				curButton.transform.localScale += Vector3(0.01,0.01,0.01);
 				prevButton = curButton;
 			}
 		} else {
-			if (prevButton) {
-				prevButton.transform.localScale = Vector3.zero;
-				prevButton = null;
-			}
+			// if we had a previous button selected, reset it.
+			ResetPrevButton();
 			var ray : Ray = Camera.main.ScreenPointToRay(touchPos);
 			if (Time.timeScale > 0) {
 		    	hit = Physics2D.GetRayIntersection(ray, 100, _normalMask);
@@ -77,10 +82,7 @@ function Update () {
 		    }
 	    }
 	} else {
-		if (prevButton) {
-			prevButton.transform.localScale = Vector3.zero;
-			prevButton = null;
-		}
+		ResetPrevButton();
 	}
 }
 
@@ -88,9 +90,25 @@ function Update () {
 // of the handler class of that button.
 private function PressButton() {
 	Debug.Log(prevButton.name);
-	if(prevButton.tag == "TopBarGUI") {
-		TopBarHandler.Get().Click(prevButton.name);
-	} else if(prevButton.tag == "BottomBuildGUI") {
-		BuildManager.Get().Click(prevButton.name);
+	switch (prevButton.tag) {
+		case "TopBarGUI" :
+			TopBarHandler.Get().Click(prevButton.name);
+			break;
+		case "BottomBuildGUI" :
+			BuildManager.Get().Click(prevButton.name);
+			break;
+		case "NewShapePreviewGUI" :
+			NextShapePreview.Get().Click(prevButton.name);
+			break;
+		case "ModalGUI" :
+			ModalManager.Get().Click(prevButton.name);
+			break;
+	}
+}
+
+private function ResetPrevButton() {
+	if (prevButton) {
+		prevButton.transform.localScale = Vector3.zero;
+		prevButton = null;
 	}
 }

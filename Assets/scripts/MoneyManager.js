@@ -11,6 +11,9 @@ function Awake()
 {
     Instance = this;
     _moneyLabel.text = "$" + _money.ToString("n0");
+    _moneyLabel.fontSize *= GameUtils.DpiDifference();
+    _moneyLabel.pixelOffset.y *= GameUtils.DpiDifference();
+    _moneyLabel.pixelOffset.x *= GameUtils.DpiDifference();
 }
 
 function AlterMoney(amount : int) : boolean {

@@ -25,11 +25,13 @@ public function BuildManager(){}
 
 function Awake()
 {
-	_buttonHeight *= LevelMaster.Get().DpiDifference();
+	_buttonHeight *= GameUtils.DpiDifference();
     Instance = this;
     _currentState = BuildingState.None;
     _transparentOverlay.renderer.enabled = false;
     background.pixelInset.width = Screen.width;
+    background.pixelInset.height = _buttonHeight;
+    backBtn.AlterButtonWidthByDpi();
 }
 
 function Start() {
@@ -42,6 +44,21 @@ function Start() {
     	_buildingTypeButtons[typeBtnsIndex].SetPixelInset(inset);
     }
     
+    //adjust shop / cop / prop width by the screen dpi
+    for (var shop : Button in _shopButtons) {
+    	shop.AlterButtonWidthByDpi();
+    	//shop.SetPixelInset(shop.GetPixelInset());
+    }
+    for (var cop : Button in _copButtons) {
+    	cop.AlterButtonWidthByDpi();
+    	//cop.SetPixelInset(cop.GetPixelInset());
+    }
+    for (var prop : Button in _propButtons) {
+    	prop.AlterButtonWidthByDpi();
+    	//prop.SetPixelInset(prop.GetPixelInset());
+    }
+    
+	
     // Set width / position of Building Buttons
     for (var buildingBtnsIndex = 0; buildingBtnsIndex < _buildingButtons.length; buildingBtnsIndex++) {
     	inset = _buildingButtons[buildingBtnsIndex].GetPixelInset();
@@ -193,84 +210,6 @@ function ClickBuildButton(name : String) {
 			ChangeButtons();
 			break;
 	}
-}
-
-function OnGUI() {
-	/*GUI.Box(Rect(0,Screen.height-_buttonHeight, Screen.width, _buttonHeight), "");
-	switch(_currentState) {
-		case BuildingState.None :
-			if(GUI.Button(Rect(0,Screen.height-_buttonHeight,Screen.width/3, _buttonHeight), "Shops")){
-				_currentState = BuildingState.Shops;
-			}
-			if(GUI.Button(Rect(Screen.width/3,Screen.height-_buttonHeight,Screen.width/3, _buttonHeight), "Cops")){
-				_currentState = BuildingState.Cops;
-			}
-			if(GUI.Button(Rect(Screen.width/3*2,Screen.height-_buttonHeight,Screen.width/3, _buttonHeight), "Props")){
-				_currentState = BuildingState.Props;
-			}
-		break;
-		case BuildingState.Shops :
-			if(GUI.Button(Rect(0,Screen.height-_buttonHeight,_buttonHeight, _buttonHeight), "<")){
-				_currentState = BuildingState.None;
-			}
-			
-			for (var shopIndex = 0; shopIndex < _shopButtons.Length; shopIndex++) {
-				if (!MoneyManager.Get().CheckMoney(_shopButtons[shopIndex].cost)){
-					//Set this button to be disablaed
-					GUI.enabled = false;
-				}
-				if(GUI.Button(Rect(_buttonHeight+(shopIndex*_buttonHeight),Screen.height-_buttonHeight,_buttonHeight, _buttonHeight), _shopButtons[shopIndex].texture)){
-					EnterBuildMode(_shopButtons[shopIndex]);
-				}
-				GUI.enabled = true;
-			}
-		break;
-		case BuildingState.Cops :
-			if(GUI.Button(Rect(0,Screen.height-_buttonHeight,_buttonHeight, _buttonHeight), "<")){
-				_currentState = BuildingState.None;
-			}
-			
-			for (var copIndex = 0; copIndex < _copButtons.Length; copIndex++) {
-				if (!MoneyManager.Get().CheckMoney(_copButtons[copIndex].cost)){
-					//Set this button to be disablaed
-					GUI.enabled = false;
-				}
-				if(GUI.Button(Rect(_buttonHeight+(copIndex*_buttonHeight),Screen.height-_buttonHeight,_buttonHeight, _buttonHeight), _copButtons[copIndex].texture)){
-					EnterBuildMode(_copButtons[copIndex]);
-				}
-				GUI.enabled = true;
-			}
-		break;
-		case BuildingState.Props :
-			// display props buttons on slider
-		break;
-		case BuildingState.Building :
-			if(_currentBuilding.tag == "Shop") {
-				if (GUI.Button (Rect(Screen.width/4,Screen.height-_buttonHeight,Screen.width/4, _buttonHeight), "Rotate")) {
-					ShopBuilder.Get().Rotate();
-					_confirmingBuild = false;
-				}
-				if (GUI.Button (Rect(Screen.width/4*2,Screen.height-_buttonHeight,Screen.width/4, _buttonHeight), "New Shape ($250)")) {
-					// check if player can afford the cost. If so:
-					ShopBuilder.Get().NewNextShape();
-					_confirmingBuild = false;
-				}
-			}
-			
-			if (GUI.Button (Rect(0,Screen.height-_buttonHeight,Screen.width/4, _buttonHeight), "Cancel")) {
-				// Enter the build mode:
-				ExitBuildMode();
-			}
-
-			if (_confirmingBuild) {
-				if (GUI.Button (Rect(Screen.width/4*3,Screen.height-_buttonHeight,Screen.width/4, _buttonHeight), "Confirm")) {
-					// Enter the build mode:
-					ConfirmBuild();
-					ExitBuildMode();
-				}
-			}	
-		break;
-	}*/
 }
 
 private function EnterBuildMode(building : BuildingButton) {

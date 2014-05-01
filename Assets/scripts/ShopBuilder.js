@@ -100,7 +100,7 @@ function NewNextShape() {
 }
 
 function Rotate() {
-	Get().Reset();
+	Reset();
 	_shapes[_nextShape].Rotate();
 	NextShapePreview.Get().ChangeShape(_shapes[_nextShape]);
 }

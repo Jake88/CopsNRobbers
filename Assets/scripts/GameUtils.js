@@ -61,4 +61,17 @@ public class GameUtils {
 		}
 		return randomArray;
 	}
+	
+	public static function DpiDifference() {
+		var DEFAULT_DPI : float = 160;
+		var dpiDifference : float;
+		if ( Screen.dpi == 0 ) {
+	    	dpiDifference = 1;
+	    } else {
+	     	dpiDifference = Screen.dpi / DEFAULT_DPI;
+	    }
+		return dpiDifference;
+	}
+    
+	
 }

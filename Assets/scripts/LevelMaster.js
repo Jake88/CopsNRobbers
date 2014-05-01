@@ -1,7 +1,6 @@
 ﻿#pragma strict
 
 private static var Instance : LevelMaster = null;
-private static var DEFAULT_DPI : float = 160;
 var _mallWidth : float;
 var _mallHeight : float;
 var _tiles : Tile[,];
@@ -26,15 +25,13 @@ function Awake()
     Instance = this;
     _currentState = LevelStates.None;
     _curTimescale = 1.0;
-    
-    if ( Screen.dpi == 0 ) {
-    	dpiDifference = 1;
-    } else {
-     dpiDifference = Screen.dpi / DEFAULT_DPI;
-    }
 
 	CreateTiles();
 	FloodFiller.Get().CreatePaths();
+	
+	_gameClockLabel.fontSize *= GameUtils.DpiDifference();
+    _gameClockLabel.pixelOffset.y *= GameUtils.DpiDifference();
+    _gameClockLabel.pixelOffset.x *= GameUtils.DpiDifference();
 }
 
 function Start() {
@@ -72,12 +69,13 @@ function MoveTime(val : float) {
 }
 
 private function Midnight() {
-	_gameClock = 0;
-	// Display MIDNIGHT MODAL.
-	ModalManager.Get().CreateTimeModal("MIDNIGHT", "Rent Due: $"+ _rent, 3.0);
-	// fire midnight triggers.
-	WaveSpawner.Get().MidnightTrigger();
-	GetRent();
+	if(GetRent()) {
+		_gameClock = 0;
+		// Display MIDNIGHT MODAL.
+		ModalManager.Get().CreateTimeModal("MIDNIGHT", "Rent Due: $"+ _rent, 3.0);
+		// fire midnight triggers.
+		WaveSpawner.Get().MidnightTrigger();
+	}
 }
 
 private function MidnightWarning() {
@@ -146,16 +144,23 @@ private function GetRent() {
 		//TODO Game over
 		StopGame();
 		
+		return false;
 	}
+	
+	return true;
 }
+
+var ExitGameFunc : Function = function() {
+	Debug.Log("testing this is Exit Game Func");
+};
 
 private function StopGame() {
 	CancelInvoke("Midnight");
 	CancelInvoke("MidnightWarning");
     CancelInvoke("IncreaseGameClock");
     
-    ModalManager.Get().CreateButtonModal("Bankrupt!", "You managed the mall for " + Time.timeSinceLevelLoad);
-}
+    ModalManager.Get().CreateButtonModal("Bankrupt!", "You managed the mall for " + Time.timeSinceLevelLoad, ExitGameFunc);
+} 
 
 // GETTERS AND SETTERS
 public function GetStartTile() : Tile {
@@ -164,10 +169,6 @@ public function GetStartTile() : Tile {
 
 public function GetEndTile() : Tile {
 	return _endTile;
-}
-
-public function DpiDifference() {
-	return dpiDifference;
 }
 
 

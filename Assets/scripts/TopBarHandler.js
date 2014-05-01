@@ -3,6 +3,7 @@
 var _speedNormalBtn : GUITexture;
 var _speedFastBtn : GUITexture;
 var _background : GUITexture;
+var _backgroundDownArrow : GUITexture;
 var _backgroundOffset : float;
 var _isTopBarDown : boolean;
 var _moving : boolean;
@@ -16,22 +17,33 @@ public function TopBarHandler(){}
 function Awake()
 {
     Instance = this;
+    _height *= GameUtils.DpiDifference();
 }
 
 function Start() {
-// Set the starting position / widths of the GUI elements.
-_backgroundOffset = -_height;
-_background.pixelInset.width = Screen.width;
-_background.pixelInset.height = _height*2 + 10;
-_background.pixelInset.y = _backgroundOffset;
-_isTopBarDown = false;
-_moving = false;
-	
-_speedNormalBtn.pixelInset.y = 5;
-_speedNormalBtn.pixelInset.x = 5;
+	// Set the starting position / widths of the GUI elements.
+	_backgroundOffset = -_height;
+	_background.pixelInset.width = Screen.width;
+	_background.pixelInset.height = _height*2 + 10;
+	_background.pixelInset.y = _backgroundOffset;
+	_isTopBarDown = false;
+	_moving = false;
+		
+	var diff : float = GameUtils.DpiDifference();
+	_speedNormalBtn.pixelInset.width *= diff;
+	_speedNormalBtn.pixelInset.height *= diff;
+	_speedNormalBtn.pixelInset.y = 5 * diff;
+	_speedNormalBtn.pixelInset.x = 5 * diff;
 
-_speedFastBtn.pixelInset.y = 5;
-_speedFastBtn.pixelInset.x = 10 +44;
+	_speedFastBtn.pixelInset.width *= diff;
+	_speedFastBtn.pixelInset.height *= diff;
+	_speedFastBtn.pixelInset.y = 5 * diff;
+	_speedFastBtn.pixelInset.x = (10 + 44) * diff;
+	
+	_backgroundDownArrow.pixelInset.width *= diff;
+	_backgroundDownArrow.pixelInset.height *= diff;
+	_backgroundDownArrow.pixelInset.y *= diff;
+	_backgroundDownArrow.pixelInset.x *= diff;
 }
 
 function Click(name : String) {
@@ -66,6 +78,7 @@ function Open() {
 		_background.pixelInset.y = _backgroundOffset;
 		_speedNormalBtn.pixelInset.y -= offsetAmount;
 		_speedFastBtn.pixelInset.y -= offsetAmount;
+		_backgroundDownArrow.pixelInset.y -= offsetAmount;
 		NextShapePreview.Get().Move(0, -offsetAmount);
 		MoneyManager.Get().Move(-offsetAmount);
 		LevelMaster.Get().MoveTime(-offsetAmount);
@@ -77,6 +90,7 @@ function Open() {
 	LevelMaster.Get().MoveTime(endY - _backgroundOffset);
 	_speedNormalBtn.pixelInset.y += endY - _backgroundOffset;
 	_speedFastBtn.pixelInset.y += endY - _backgroundOffset;
+	_backgroundDownArrow.pixelInset.y += endY - _backgroundOffset;
 	_backgroundOffset = endY;
 	_background.pixelInset.y = _backgroundOffset;
 	_moving = false;
@@ -90,6 +104,7 @@ function Close() {
 		_background.pixelInset.y = _backgroundOffset;
 		_speedNormalBtn.pixelInset.y += offsetAmount;
 		_speedFastBtn.pixelInset.y += offsetAmount;
+		_backgroundDownArrow.pixelInset.y += offsetAmount;
 		NextShapePreview.Get().Move(0, offsetAmount);
 		MoneyManager.Get().Move(offsetAmount);
 		LevelMaster.Get().MoveTime(offsetAmount);
