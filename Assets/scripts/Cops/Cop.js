@@ -5,6 +5,7 @@ public class Cop extends Building {
 	var _maxDamage : float;
 	var _attackSpeed : float;
 	var _tile : Tile;
+	var _attackSprite : SpriteRenderer;
 
 	protected var _targets = new Array();
 	protected var _target : Robber;
@@ -14,6 +15,7 @@ public class Cop extends Building {
 	function Start () {
 		_attackCooldown = Time.time;
 		_attackSpeed /= 3;
+		_attackSprite.enabled = false;
 	}
 
 	function OnTriggerEnter2D (other : Collider2D) {
@@ -78,7 +80,13 @@ public class Cop extends Building {
 			
 			_attackCooldown = Time.time + _attackSpeed;
 			// call the fire animation of this tower
+			_attackSprite.enabled = true;
+			Invoke("HideAttackSprite", .2);
 		}
+	}
+	
+	private function HideAttackSprite() {
+		_attackSprite.enabled = false;
 	}
 	
 	function Sell() {

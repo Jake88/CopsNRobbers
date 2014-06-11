@@ -42,6 +42,8 @@ public class PoliceDog extends Cop {
 			
 			_attackCooldown = Time.time + _attackSpeed;
 			// call the fire animation of this tower
+			_attackSprite.enabled = true;
+			Invoke("HideAttackSprite", .2);
 		}
 	}
 }
