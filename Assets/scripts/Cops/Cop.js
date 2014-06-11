@@ -6,10 +6,10 @@ public class Cop extends Building {
 	var _attackSpeed : float;
 	var _tile : Tile;
 
-	private var _targets = new Array();
-	private var _target : Robber;
-	private var _attackCooldown : float;
-	private var _anim : Animator;
+	protected var _targets = new Array();
+	protected var _target : Robber;
+	protected var _attackCooldown : float;
+	protected var _anim : Animator;
 
 	function Start () {
 		_attackCooldown = Time.time;
@@ -20,17 +20,22 @@ public class Cop extends Building {
 		// check if the Collider is a robber and make sure we don't already have a target
 		if(other.gameObject.tag == "Robber") {
 			// set this Collider as our target
-			_targets.Add(other.gameObject.GetComponent("Robber"));
+			var rob : Robber = other.gameObject.GetComponent("Robber");
+			if (!rob._sneaky) {
+				_targets.Add(rob);
+			}
 		}
-			
 	}
 
 	function OnTriggerExit2D (other : Collider2D) {
 		// check if the Collider is our current target
 		if (other.gameObject.tag == "Robber") {
 			// Set target to null
-			_targets.Remove(other.gameObject.GetComponent("Robber"));
-			SetTarget();
+			var rob : Robber = other.gameObject.GetComponent("Robber");
+			if (!rob._sneaky) {
+				_targets.Remove(other.gameObject.GetComponent("Robber"));
+				SetTarget();
+			}
 		}
 	}
 
@@ -78,7 +83,7 @@ public class Cop extends Building {
 	
 	function Sell() {
 		// Give player the money.
-		MoneyManager.Get().AlterMoney(_cost/2);
+		MoneyManager.Get().AddMoney(_cost * 0.5);
 		_tile._occupied = false;
 		_tile._occupiedUnit = null;
 		GameObject.Destroy(this.gameObject);

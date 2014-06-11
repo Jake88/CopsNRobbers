@@ -6,16 +6,24 @@ var _stealAmount : int;
 var _bountyValue : int;
 var _returning : boolean = false;
 var _healthBar : Health;
+var _sneaky : boolean;
 
+private var _movement : RobberMovement;
 private var _curTile : Tile;
 
 function Start () {
 	_curHP = _maxHP;
 	_healthBar = transform.FindChild("hp-foreground").GetComponent("Health") as Health;
 	this.transform.position = LevelMaster.Get().GetStartTile().transform.position;
+	_movement = GetComponent("RobberMovement") as RobberMovement;
 }
 
 function TakeDamage(damage:float) : boolean {
+	if(_sneaky) {
+		_sneaky = false;
+		var sr : SpriteRenderer = transform.GetComponent("SpriteRenderer") as SpriteRenderer;
+		sr.color = Color.white;
+	}
 	_curHP -= damage;
 	if (_curHP <= 0) {
 		Die();
@@ -23,6 +31,14 @@ function TakeDamage(damage:float) : boolean {
 	}
 	_healthBar.UpdateLength(_maxHP, _curHP);
 	return false;
+}
+
+function Slow() {
+	_movement.Slow();
+}
+
+function Stun() {
+	_movement.Stun();
 }
 
 function Die() {

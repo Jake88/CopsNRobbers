@@ -2,11 +2,15 @@
 
 private var _nextTile : Tile;
 private var _robber : Robber;
-var _moveSpeed : float;
+private var _slowed : boolean;
+private var _moveSpeed : float;
+var _baseMoveSpeed : float;
 var _returningSprite : Sprite;
 
 function Start () {
 	_robber = this.GetComponent("Robber") as Robber;
+	_slowed = false;
+	_moveSpeed = _baseMoveSpeed;
 	_nextTile = LevelMaster.Get().GetStartTile()._nextTileToBank;
 	transform.position = LevelMaster.Get().GetStartTile().transform.position;
    	transform.rotation = Quaternion.LookRotation(Vector3.forward, _nextTile.transform.position - transform.position);
@@ -48,6 +52,23 @@ function MoveToPositionRecursive() : IEnumerator
 	transform.rotation = Quaternion.LookRotation(Vector3.forward, _nextTile.transform.position - transform.position);
 
 	this.MoveToPositionRecursive();
+}
+
+function Slow() {
+	if(!_slowed) {
+		_slowed = true;
+		_moveSpeed *= 0.5;
+	}
+}
+
+function Stun() {
+	CancelInvoke("Unstun");
+	_moveSpeed = 0;
+	Invoke("Unstun", 1);
+}
+
+function Unstun() {
+	_moveSpeed = _baseMoveSpeed;
 }
 
 function StartReturning() {

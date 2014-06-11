@@ -72,12 +72,15 @@ function Update () {
 		    }
 		    
 		    if (hit && GUIUtility.hotControl == 0) {
-		    	if (hit && hit.transform.tag == "Tile") {
+		    	var tag : String = hit.transform.tag;
+		    	if (tag == "Tile") {
 			    	var tile : Tile = hit.transform.GetComponent("Tile") as Tile;
 			    	if(_prevTile == null || _prevTile != tile) { 
 						_prevTile = tile;
 			    		BuildManager.Get().CheckBuildPosition(tile);
 			    	}
+			    } else if (tag == "Cop" || tag == "Shop" || tag == "Prop") {
+			    	BuildManager.Get().SelectBuilding(hit.collider.transform);
 			    }
 		    }
 	    }

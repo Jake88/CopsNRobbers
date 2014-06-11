@@ -26,7 +26,8 @@ function Awake()
 		
 	var diff : float = GameUtils.DpiDifference();
 	modalBG.pixelInset.width = Screen.width;
-	modalBG.pixelInset.height = Screen.height;
+	modalBG.pixelInset.height = Screen.height*0.7;
+	modalBG.pixelInset.y = Screen.height*0.15;
 	
 	_heading.fontSize *= diff;
 	_heading.pixelOffset.y *= diff;
@@ -37,6 +38,7 @@ function Awake()
 	_body.pixelOffset.x *= diff;
 	
 	_continueBtn.AlterButtonWidthByDpi();
+	_cancelBtn.AlterButtonWidthByDpi();
 	
 	modalBG.active = false;
 	_heading.active = false;
@@ -121,6 +123,9 @@ private function StartModal() {
 		_body.color.a += 0.1;
 		yield;
 	}
+	modalBG.color.a = 0.7;
+	_heading.color.a = 1;
+	_body.color.a = 1;
 }
 
 function Click(name : String) {
@@ -147,6 +152,9 @@ function CloseModal() {
 		_body.color.a -= 0.1;
 		yield;
 	}
+	modalBG.color.a = 0;
+	_heading.color.a = 0;
+	_body.color.a = 0;
 	modalBG.active = false;
 	_heading.active = false;
 	_body.active = false;

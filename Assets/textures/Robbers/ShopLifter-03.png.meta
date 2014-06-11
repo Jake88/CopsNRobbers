@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 67870928b13c2f547b37daa7b8f50cd2
+guid: 06dc0c7f5412e9843af447985e2e4cd7
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -24,18 +24,18 @@ TextureImporter:
   maxTextureSize: 1024
   textureSettings:
     filterMode: -1
-    aniso: 1
+    aniso: -1
     mipBias: -1
-    wrapMode: 1
+    wrapMode: -1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: .5, y: .5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 128
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings:
@@ -44,33 +44,6 @@ TextureImporter:
     textureFormat: -2
     compressionQuality: 50
   spriteSheet:
-    sprites:
-    - name: EnglishBobby_0
-      rect:
-        serializedVersion: 2
-        x: 11
-        y: 0
-        width: 37
-        height: 38
-      alignment: 0
-      pivot: {x: .5, y: .5}
-    - name: EnglishBobby_1
-      rect:
-        serializedVersion: 2
-        x: 49
-        y: 11
-        width: 14
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-    - name: EnglishBobby_2
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 11
-        width: 11
-        height: 23
-      alignment: 0
-      pivot: {x: .5, y: .5}
+    sprites: []
   spritePackingTag: 
   userData: 

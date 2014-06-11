@@ -14,12 +14,14 @@ function Awake()
     _moneyLabel.fontSize *= GameUtils.DpiDifference();
     _moneyLabel.pixelOffset.y *= GameUtils.DpiDifference();
     _moneyLabel.pixelOffset.x *= GameUtils.DpiDifference();
+    BuildManager.Get().CheckAllShopCosts();
 }
 
 function AlterMoney(amount : int) : boolean {
 	if (_money - amount >= 0) {
 		_money -= amount;
 		_moneyLabel.text = "$" + _money.ToString("n0");
+		BuildManager.Get().CheckAllShopCosts();
 		return true;
 	}
 	return false;
@@ -28,11 +30,14 @@ function AlterMoney(amount : int) : boolean {
 function StealMoney(amount : int) {
 	_money -= amount;
 	_moneyLabel.text = "$" + _money.ToString("n0");
+	BuildManager.Get().CheckAllShopCosts();
 }
 
 function AddMoney(amount : int) {
 	_money += amount;
 	_moneyLabel.text = "$" + _money.ToString("n0");
+	BuildManager.Get().CheckAllShopCosts();
+	LevelMaster.Get().CheckForWin();
 }
 
 function CheckMoney(amount : int) : boolean {

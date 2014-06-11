@@ -31,9 +31,10 @@ function UpdateLength (maxHP : float, curHP : float) {
 }
 
 function UpdatePosition() {
-	var wantedPos = Camera.main.WorldToViewportPoint (transform.parent.transform.position + _offset); 
-    _background.transform.position = _healthBar.transform.position = wantedPos;
-    _background.transform.position.z = 0;
-    _healthBar.transform.position.z = 1.0;
-    
+	if(Camera.main != null) {
+		var wantedPos = Camera.main.WorldToViewportPoint (transform.parent.transform.position + _offset); 
+	    _background.transform.position = _healthBar.transform.position = wantedPos;
+	    _background.transform.position.z = 0;
+	    _healthBar.transform.position.z = 1.0;
+    }
 }

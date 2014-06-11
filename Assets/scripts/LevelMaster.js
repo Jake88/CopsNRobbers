@@ -8,6 +8,7 @@ var _bankSprites : Sprite[];
 var _wallSprite : Sprite;
 var _secondsBetweenMidnight : int;
 var _rent : int;
+var _winGoal : int;
 var _curTimescale : float;
 var _gameClockLabel : GUIText;
 private var _gameClock : int;
@@ -15,6 +16,7 @@ private var _startTile : Tile;
 private var _endTile : Tile;
 private var _currentState : LevelStates;
 private var dpiDifference : float;
+private var _gameDays : int;
 
 public static function Get() : LevelMaster { return Instance; }
 
@@ -25,6 +27,7 @@ function Awake()
     Instance = this;
     _currentState = LevelStates.None;
     _curTimescale = 1.0;
+    _gameDays = 1;
 
 	CreateTiles();
 	FloodFiller.Get().CreatePaths();
@@ -37,7 +40,7 @@ function Awake()
 function Start() {
 	// Start repeating functions for the game.
 	InvokeRepeating("Midnight", _secondsBetweenMidnight, _secondsBetweenMidnight);
-	InvokeRepeating("MidnightWarning", _secondsBetweenMidnight-15.0, _secondsBetweenMidnight-15.0);
+	InvokeRepeating("MidnightWarning", _secondsBetweenMidnight-15.0, _secondsBetweenMidnight);
 	
 	// Work out game clock.
     var minutesPerDay : float = 1440;
@@ -71,15 +74,16 @@ function MoveTime(val : float) {
 private function Midnight() {
 	if(GetRent()) {
 		_gameClock = 0;
+		_gameDays++;
 		// Display MIDNIGHT MODAL.
-		ModalManager.Get().CreateTimeModal("MIDNIGHT", "Rent Due: $"+ _rent, 3.0);
+		ModalManager.Get().CreateTimeModal("MIDNIGHT", "Rent Due: $"+ _rent, 1.75);
 		// fire midnight triggers.
 		WaveSpawner.Get().MidnightTrigger();
 	}
 }
 
 private function MidnightWarning() {
-	ModalManager.Get().CreateTimeModal("MIDNIGHT APPROACHES", "A grand heist is being planned!", 4.0);
+	ModalManager.Get().CreateTimeModal("MIDNIGHT APPROACHES", "A grand heist is being planned!", 1.75);
 }
 
 private function CreateTiles() {
@@ -139,19 +143,23 @@ public function ChangeGameSpeed() {
 
 private function GetRent() {
 	if (!MoneyManager.Get().AlterMoney(_rent)) {
-		Debug.Log("Stopping Game");
-		// The player can't afford rent. Game over.
-		//TODO Game over
-		StopGame();
-		
+		Debug.Log("Game Over. Stopping Game");
+		GameOver();
 		return false;
 	}
-	
 	return true;
 }
 
 var ExitGameFunc : Function = function() {
 	Debug.Log("testing this is Exit Game Func");
+	
+	// destory everything.
+	var objs : Array  = GameObject.FindObjectsOfType(GameObject);
+	for (var obj : GameObject in objs) {
+		GameObject.Destroy(obj);
+	}
+	
+	Application.LoadLevel("Menu");
 };
 
 private function StopGame() {
@@ -159,8 +167,27 @@ private function StopGame() {
 	CancelInvoke("MidnightWarning");
     CancelInvoke("IncreaseGameClock");
     
-    ModalManager.Get().CreateButtonModal("Bankrupt!", "You managed the mall for " + Time.timeSinceLevelLoad, ExitGameFunc);
-} 
+    WaveSpawner.Get().Stop();
+}
+
+private function GameOver() {
+	StopGame();
+    var endMsg : String = "You managed the mall for " + _gameDays + " days!\nBetter luck next time.";
+    ModalManager.Get().CreateButtonModal("Bankrupt!", endMsg, ExitGameFunc);
+}
+
+private function Win() {
+	StopGame();
+    var endMsg : String = "You saved $" + _winGoal.ToString("n0") + " in " + _gameDays + " days!\n See if you can beat it next time.";
+    ModalManager.Get().CreateButtonModal("Winner!", endMsg, ExitGameFunc);
+}
+
+public function CheckForWin() {
+	if (MoneyManager.Get().CheckMoney(_winGoal)) {
+		// Player has won.
+		Win();
+	}
+}
 
 // GETTERS AND SETTERS
 public function GetStartTile() : Tile {

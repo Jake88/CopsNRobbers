@@ -11,6 +11,7 @@ function Awake() {
 	icon.pixelInset.y *= diff;
 	
 	button.pixelInset.height *= diff;
+	button.pixelInset.y *= diff;
 	
 	label.fontSize *= diff;
 	label.pixelOffset.y *= diff;
@@ -35,6 +36,11 @@ function AlterButtonWidthByDpi() {
 	label.pixelOffset.x *= diff;
 	button.pixelInset.width *= diff;
 	button.pixelInset.x *= diff;
+}
+
+function ChangeAlpha(val : float) {
+	icon.color.a = val;
+	label.color.a = val;
 }
 
 function ChangeLabel(text : String) {

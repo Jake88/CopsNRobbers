@@ -6,6 +6,7 @@ var _copButtons : BuildingButton[];
 var _propButtons : BuildingButton[];
 var _buildingTypeButtons : Button[];
 var _buildingButtons : Button[];
+var _sellingButtons : Button[];
 var _transparentOverlay : Transform;
 var background : GUITexture;
 var backBtn : Button;
@@ -13,6 +14,8 @@ var backBtn : Button;
 private var _selectedTile : Tile;
 private var _currentBuilding : BuildingButton;
 private var _currentState : BuildingState;
+
+private var _selectedBuilding : Building;
 
 // Pixel variables.
 private var _buttonHeight : float = 70;
@@ -47,17 +50,13 @@ function Start() {
     //adjust shop / cop / prop width by the screen dpi
     for (var shop : Button in _shopButtons) {
     	shop.AlterButtonWidthByDpi();
-    	//shop.SetPixelInset(shop.GetPixelInset());
     }
     for (var cop : Button in _copButtons) {
     	cop.AlterButtonWidthByDpi();
-    	//cop.SetPixelInset(cop.GetPixelInset());
     }
     for (var prop : Button in _propButtons) {
     	prop.AlterButtonWidthByDpi();
-    	//prop.SetPixelInset(prop.GetPixelInset());
     }
-    
 	
     // Set width / position of Building Buttons
     for (var buildingBtnsIndex = 0; buildingBtnsIndex < _buildingButtons.length; buildingBtnsIndex++) {
@@ -67,6 +66,12 @@ function Start() {
     	_buildingButtons[buildingBtnsIndex].SetPixelInset(inset);
     }
     
+    for (var sellingBtnsIndex = 0; sellingBtnsIndex < _sellingButtons.length; sellingBtnsIndex++) {
+    	inset = _sellingButtons[sellingBtnsIndex].GetPixelInset();
+    	inset.width = Screen.width / _sellingButtons.length;
+    	inset.x = sellingBtnsIndex * (Screen.width/_sellingButtons.length);
+    	_sellingButtons[sellingBtnsIndex].SetPixelInset(inset);
+    }
     
     DisableAll();
 	for (var typeBtns : Button in _buildingTypeButtons) {
@@ -92,6 +97,9 @@ function Click(name : String) {
 		case BuildingState.Building :
 			ClickBuildButton(name);
 			break;
+		case BuildingState.Selling :
+			ClickSellingButton(name);
+			break;
 	}
 }
 
@@ -114,7 +122,9 @@ function ChangeButtons() {
 			}
 			break;
 		case BuildingState.Props :
+			Debug.Log("_propButtons " + _propButtons);
 			for (var propButton : BuildingButton in _propButtons) {
+			Debug.Log("propButton.name " + propButton.name);
 				propButton.active = true;
 			}
 			break;
@@ -123,6 +133,11 @@ function ChangeButtons() {
 				if(buildingButton.name != "ConfirmBtn") {
 					buildingButton.active = true;
 				}
+			}
+			break;
+		case BuildingState.Selling :
+			for (var sellingButton : Button in _sellingButtons) {
+				sellingButton.active = true;
 			}
 			break;
 	}
@@ -144,6 +159,10 @@ private function DisableAll() {
 	for (var buildingButton : Button in _buildingButtons) {
 		buildingButton.active = false;
 	}
+	for (var sellingButtons : Button in _sellingButtons) {
+		sellingButtons.active = false;
+	}
+
 	backBtn.active = false;
 }
 
@@ -212,6 +231,44 @@ function ClickBuildButton(name : String) {
 	}
 }
 
+function ClickSellingButton(name : String) {
+	switch (name) {
+		case "Confirm" :
+			Sell();
+			break;
+		case "Cancel" :
+			_currentState = BuildingState.None;
+			for (var child : Transform in _selectedBuilding.transform) {
+				var sr : SpriteRenderer = child.GetComponent("SpriteRenderer") as SpriteRenderer;
+				sr.color = Color.white;
+			}
+			_selectedBuilding = null;
+			ChangeButtons();
+			break;
+	}
+}
+
+private function Sell() {
+	// Check what type of building it is
+	var shop : Shop = _selectedBuilding.transform.GetComponent("Shop") as Shop;
+	var cop : Cop = _selectedBuilding.transform.GetComponent("Cop") as Cop;
+	var prop : Prop = _selectedBuilding.transform.GetComponent("Prop") as Prop;
+	// Get the tiles that are occupied by that building
+	if (shop) {
+		shop.Sell();
+	} else if (cop) {
+		cop.Sell();
+	} else if (prop) {
+		prop.Sell();
+	}
+	_currentState = BuildingState.None;
+	_selectedBuilding = null;
+	ChangeButtons();
+	
+	// refresh the pathfinder
+	FloodFiller.Get().CreatePaths();
+}
+
 private function EnterBuildMode(building : BuildingButton) {
 	_currentBuilding = building;
 	_currentState = BuildingState.Building;
@@ -245,7 +302,7 @@ function CheckBuildPosition(tile : Tile) {
 	if(_currentState == BuildingState.Building) {
 		if(_currentBuilding.tag == "Shop") {
 			_buildingButtons[_buildingButtons.length-1].active = ShopBuilder.Get().Build(tile);
-		} else if (_currentBuilding.tag == "Cop") {
+		} else if (_currentBuilding.tag == "Cop" || _currentBuilding.tag == "Prop") {
 	    	if(tile._isAvailable) {
 	    		tile.Highlight(true);
 	    		_buildingButtons[_buildingButtons.length-1].active = true;
@@ -257,8 +314,6 @@ function CheckBuildPosition(tile : Tile) {
 	    		_selectedTile.Unhighlight();
 	    	}
 	    	_selectedTile = tile;
-		} else {
-		
 		}
 	}
 }
@@ -271,19 +326,67 @@ private function ConfirmBuild() {
 			if(_selectedTile._isAvailable) {
 	    		BuildCop();
 	    	}
-		} else {
-		
+		} else if (_currentBuilding.tag == "Prop") {
+			if(_selectedTile._isAvailable) {
+	    		BuildProp();
+	    	}
 		}
 	}
 }
 
 private function BuildCop() {
 	_selectedTile._occupied = true;
-	var cop : GameObject = Instantiate(Resources.Load(_currentBuilding.shopName)) as GameObject;
+	var go : GameObject = Instantiate(Resources.Load(_currentBuilding.shopName)) as GameObject;
+	var cop : Cop = go.transform.GetComponent("Cop") as Cop;
 	_selectedTile._occupiedUnit = cop.gameObject;
+	cop._tile = _selectedTile;
 	cop.transform.position.x = _selectedTile.transform.position.x;
 	cop.transform.position.y = _selectedTile.transform.position.y;
 	FloodFiller.Get().CreatePaths();
+}
+
+private function BuildProp() {
+	_selectedTile._occupied = true;
+	var go : GameObject = Instantiate(Resources.Load(_currentBuilding.shopName)) as GameObject;
+	var prop : Prop = go.transform.GetComponent("Prop") as Prop;
+	_selectedTile._occupiedUnit = prop.gameObject;
+	prop._tile = _selectedTile;
+	prop.transform.position.x = _selectedTile.transform.position.x;
+	prop.transform.position.y = _selectedTile.transform.position.y;
+	FloodFiller.Get().CreatePaths();
+}
+
+public function SelectBuilding(trans:Transform) {
+	if (_currentState == BuildingState.None) {
+		_selectedBuilding = trans.parent.GetComponent("Building") as Building;	
+		for (var child : Transform in _selectedBuilding.transform) {
+			var sr : SpriteRenderer = child.GetComponent("SpriteRenderer") as SpriteRenderer;
+			sr.color = Color.cyan;
+		}
+		_currentState = BuildingState.Selling;
+		ChangeButtons();
+	}
+}
+
+public function CheckAllShopCosts() {
+	for (var shopButton : BuildingButton in _shopButtons) {
+		CheckShopCost(shopButton);
+	}
+	for (var copButton : BuildingButton in _copButtons) {
+		CheckShopCost(copButton);
+	}
+	for (var propButton : BuildingButton in _propButtons) {
+		CheckShopCost(propButton);
+	}	
+}
+
+private function CheckShopCost(btn : BuildingButton) {
+	if(MoneyManager.Get().CheckMoney(btn.cost)) {
+		btn.ChangeAlpha(1);
+	} else {
+		btn.ChangeAlpha(0.3);
+	}
+	
 }
 
 public function GetButtonHeight() : float {
@@ -296,5 +399,6 @@ private enum BuildingState {
 	Shops,
 	Cops,
 	Props,
-	Building
+	Building,
+	Selling
 }

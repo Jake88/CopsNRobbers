@@ -12,11 +12,17 @@ public function WaveSpawner(){}
 
 function Awake() {
 	Instance = this;
+	_curDifficulty=0;
 }
 
 function Start () {
 	InvokeRepeating("AddGeneric", _firstSpawnDelay, _timeBetweenSpawns);
 	InvokeRepeating("SpawnFromList", _firstSpawnDelay, 0.3f);
+}
+
+function Stop() {
+	CancelInvoke("AddGeneric");
+	CancelInvoke("SpawnFromList");
 }
 
 private function AddGeneric() {
@@ -31,6 +37,11 @@ public function MidnightTrigger() {
 	
 	for(var name : String in wave.robberNames) {
 		_spawnList.Add(name);
+	}
+	
+	if(_curDifficulty < WaveLoader._levelWaves.length-1) {
+		_curDifficulty++;
+		Debug.Log("_curDifficulty " + _curDifficulty);
 	}
 }
 

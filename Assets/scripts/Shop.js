@@ -11,6 +11,7 @@ public class Shop extends Building {
 		InvokeRepeating("Payday", _paydayCooldown, _paydayCooldown);
 		//SET THE POSITIONS OF CHILD SPRITES FOR SHOP
 		tiles = GameUtils.ShuffleArray(tiles);
+		_tiles = tiles;
 		var vecs : Vector3[] = new Vector3[tiles.length];
 		for (var i = 0; i < tiles.length; i++) {
 			var shopTile : Transform = transform.GetChild(i);
@@ -26,12 +27,12 @@ public class Shop extends Building {
 	function Payday() {
 		var go : GameObject = Instantiate(Resources.Load("CashWad")) as GameObject;
 		var cash : CashWad = go.GetComponent("CashWad") as CashWad;
-		cash.Init(_padydayEarnings, _center);
+		cash.Init(_padydayEarnings*DifficultyMenu.selectedDifficulty, _center);
 	}
 
 	function Sell() {
 		// Give player the money.
-		MoneyManager.Get().AlterMoney(this._cost/2);
+		MoneyManager.Get().AddMoney(_cost * 0.5);
 		for (var tile : Tile in _tiles) {
 			tile._occupied = false;
 			tile._occupiedUnit = null;

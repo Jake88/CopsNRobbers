@@ -1,33 +1,42 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\LevelMaster.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\Menu.js">
     <Files>
-      <File FileName="Assets\scripts\BuildManager.js" Line="138" Column="27" />
-      <File FileName="Assets\scripts\NextShapePreview.js" Line="82" Column="31" />
-      <File FileName="Assets\scripts\Tile.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\ShopBuilder.js" Line="106" Column="2" />
-      <File FileName="Assets\scripts\InputController.js" Line="102" Column="10" />
+      <File FileName="Assets\other\xml\Resources\GenericWaves.xml" Line="4" Column="2" />
+      <File FileName="Assets\other\xml\Resources\LevelOneWaves.xml" Line="56" Column="49" />
+      <File FileName="Assets\scripts\ModalManager.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\BuildManager.js" Line="370" Column="1" />
+      <File FileName="Assets\scripts\NextShapePreview.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Tile.js" Line="26" Column="25" />
+      <File FileName="Assets\scripts\ShopBuilder.js" Line="91" Column="20" />
+      <File FileName="Assets\scripts\InputController.js" Line="87" Column="10" />
       <File FileName="Assets\scripts\Shape.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\Wave.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\WaveLoader.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\WaveSpawner.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\RobberMovement.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\Robber.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\Cop.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\Shop.js" Line="29" Column="40" />
-      <File FileName="Assets\scripts\GameUtils.js" Line="71" Column="29" />
+      <File FileName="Assets\scripts\Robber.js" Line="14" Column="20" />
+      <File FileName="Assets\scripts\Shop.js" Line="19" Column="38" />
+      <File FileName="Assets\scripts\GameUtils.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\StartTile.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\FloodFiller.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\BuildingButton.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\LevelMaster.js" Line="157" Column="30" />
+      <File FileName="Assets\scripts\LevelMaster.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\Building.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\CashWad.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\MoneyManager.js" Line="16" Column="57" />
-      <File FileName="Assets\scripts\ModalManager.js" Line="102" Column="2" />
+      <File FileName="Assets\scripts\MoneyManager.js" Line="36" Column="18" />
       <File FileName="Assets\scripts\CameraMovement.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\Health.js" Line="1" Column="1" />
-      <File FileName="Assets\scripts\TopBarHandler.js" Line="40" Column="17" />
-      <File FileName="Assets\scripts\Button.js" Line="32" Column="31" />
+      <File FileName="Assets\scripts\TopBarHandler.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Button.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Prop.js" Line="8" Column="42" />
+      <File FileName="Assets\scripts\Cops\PoliceDog.js" Line="32" Column="14" />
+      <File FileName="Assets\scripts\Cops\Cop.js" Line="86" Column="42" />
+      <File FileName="Assets\scripts\Cops\SecurityGuard.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Menu.js" Line="18" Column="32" />
+      <File FileName="Assets\scripts\InstructionList.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Bravado.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\DifficultyMenu.js" Line="11" Column="48" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
